@@ -1,0 +1,11 @@
+{
+  "name": "oaa-chat",
+  "version": "1.0.0",
+  "description": "Oaa! Chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "wupa9",
+  "license": "MIT"
+}
