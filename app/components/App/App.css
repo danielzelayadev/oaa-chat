@@ -1,4 +1,5 @@
 .chat-wrapper {
+	height: 100vh;
 }
 
 .chat-wrapper::after {
