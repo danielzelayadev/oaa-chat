@@ -1,43 +1,31 @@
 import React from 'react'
+import { Field, reduxForm } from 'redux-form'
 import styles from './LoginForm.css'
 
-class LoginForm extends React.Component {
+const control = ({ input, meta, ...rest }) => (
+	<div>
+		<input {...input} {...rest} />
+	</div>
+)
 
-	componentWillMount() {
-		this.setState({
-			email: '',
-			password: ''
-		})	
-	}
-
-	changeHandler () {
-
-	}
-
-	render () {
-		const { className, error, loading, onSubmit } = this.props
-		console.log(this.props)
+const LoginForm = ({ className, error, loading, login, handleSubmit }) => {
 		return (
 			<div class={`${styles['login-form']} ${className}`}>
 				{ loading ? 
 					<p>Loading...</p> :
-					<form onSubmit={e => {
-						e.preventDefault()
-						onSubmit({ email: this.state.email, password: this.state.password })
-					}}>
-						<input type="text" value={this.state.email} onChange={
-							e => { this.setState({ email: e.target.value, password: this.state.password }) }
-						} placeholder="Email" />
-						<input type="password" value={this.state.password} onChange={
-							e => { this.setState({ email: this.state.email, password: e.target.value }) }
-						} placeholder="Password" />
+					<form onSubmit={handleSubmit(login)}>
+						<div>
+				        	<Field name="email" component={control} type="text" placeholder="Email" />
+				        </div>
+				        <div>
+				          <Field name="password" component={control} type="password" placeholder="Password"  />
+				        </div>
 						<button type="submit">Submit</button>
 					</form> 
 				}
 				<p>{error}</p>
 			</div>
 		)
-	}
 }
 
-export default LoginForm
+export default reduxForm({ form: 'login' })(LoginForm)
