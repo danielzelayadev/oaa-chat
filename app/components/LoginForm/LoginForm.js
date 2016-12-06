@@ -16,7 +16,7 @@ class LoginForm extends React.Component {
 
 	render () {
 		const { className, error, loading, onSubmit } = this.props
-
+		console.log(this.props)
 		return (
 			<div class={`${styles['login-form']} ${className}`}>
 				{ loading ? 
