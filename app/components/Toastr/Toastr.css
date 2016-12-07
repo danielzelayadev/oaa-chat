@@ -1,0 +1,96 @@
+.root {
+	position: fixed;
+	width: 300px;
+	min-height: 100px;
+	height: auto;
+	color: white;
+	border-radius: 3px;
+	box-shadow: 0 0 10px #111;
+	cursor: pointer;
+	font-family: 'Nunito', sans-serif;
+	transition: opacity ease 1.1s;
+	animation: fade-in ease-in 1.1s;
+}
+
+.root:hover {
+	box-shadow: 0 0 30px #111;
+}
+
+.root h3, p {
+	margin-left: 50px
+}
+
+.root h3 {
+	margin-bottom: 0;
+}
+
+.root p {
+	margin-top: 7px;
+  line-height: 1.4;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes fade-in {
+    0% { opacity: 0; }
+   100% { opacity: 1; }
+}
+
+.icon {
+	position: absolute;
+    top: 28.5%;
+    left: 2%;
+    font-size: 34px;
+}
+
+.clear {
+	position: absolute;
+    top: 6%;
+    right: 3%;
+}
+
+.clear:hover {
+	color: #ccc;
+}
+
+.tr {
+	top: 5%;
+	left: 77%;
+}
+
+.tl {
+	top: 5%;
+	right: 77%;
+}
+
+.br {
+	bottom: 5%;
+	left: 77%;
+}
+
+.bl {
+	bottom: 5%;
+	right: 77%;
+}
+
+.success {
+    background-color: #7CB342;
+}
+
+.error {
+    background-color: #B71C1C;
+}
+
+.warning {
+    background-color: #64DD17;
+}
+
+.info {
+    background-color: #2962FF;
+}
+
+.hidden {
+	opacity: 0;
+}
