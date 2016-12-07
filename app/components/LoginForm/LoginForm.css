@@ -2,4 +2,18 @@
 	width: 550px;
 	height: 450px;
 	background: #e2f8ff;
+	box-shadow: 0 0 15px #111;
+}
+
+form {
+	position: relative;
+    top: 20%;
+    left: 25%;
+    width: 47%;
+}
+
+.loader {
+	position: relative;
+    top: 35%;
+    left: 43%;
 }

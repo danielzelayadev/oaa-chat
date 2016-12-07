@@ -1,31 +1,38 @@
 import React from 'react'
+import Halogen from 'halogen'
 import { Field, reduxForm } from 'redux-form'
+import { Input } from '../Controls'
+import Toastr from '../Toastr'
+import RaisedButton from 'material-ui/RaisedButton'
 import styles from './LoginForm.css'
 
-const control = ({ input, meta, ...rest }) => (
-	<div>
-		<input {...input} {...rest} />
-	</div>
-)
+const validate = ({ email, password }) => {
+	const errors = {}
 
-const LoginForm = ({ className, error, loading, login, handleSubmit }) => {
+	if (!email)
+		errors.email = "Email is required."
+
+	if (!password)
+		errors.password = "Password is required."
+
+	return errors
+}
+
+const LoginForm = ({ className, err, loading, login, handleSubmit }) => {
 		return (
 			<div class={`${styles['login-form']} ${className}`}>
 				{ loading ? 
-					<p>Loading...</p> :
+						<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
 					<form onSubmit={handleSubmit(login)}>
-						<div>
-				        	<Field name="email" component={control} type="text" placeholder="Email" />
-				        </div>
-				        <div>
-				          <Field name="password" component={control} type="password" placeholder="Password"  />
-				        </div>
-						<button type="submit">Submit</button>
+			        	<Field name="email" component={Input} floatingLabelText="Email" type="text" />
+			        	<Field name="password" component={Input} floatingLabelText="Password" type="password" />
+						<RaisedButton style={{ marginTop: '15px' }} type="submit" label="Log In" fullWidth={true} />
+						<Toastr title='Authentication Error' type='error' 
+						        timeout={5} message={err} show={ err && err.length > 0 } />
 					</form> 
 				}
-				<p>{error}</p>
 			</div>
 		)
 }
 
-export default reduxForm({ form: 'login' })(LoginForm)
+export default reduxForm({ form: 'login', validate })(LoginForm)
