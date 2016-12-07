@@ -18,9 +18,9 @@ const validate = ({ email, password }) => {
 	return errors
 }
 
-const LoginForm = ({ className, err, loading, login, handleSubmit }) => {
+const LoginForm = ({ err, loading, login, handleSubmit }) => {
 		return (
-			<div class={`${styles['login-form']} ${className}`}>
+			<div>
 				{ loading ? 
 						<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
 					<form onSubmit={handleSubmit(login)}>
