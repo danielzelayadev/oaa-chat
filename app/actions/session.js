@@ -8,7 +8,7 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 export const login = creds => async dispatch => {
 	dispatch({ type: LOGIN })
 	try {
-		const response = await axios.post(`http://localhost:8000/login`, creds)
+		const response = await axios.post(`${API}/login`, creds)
 		dispatch({ type: LOGIN_SUCCESS, token: response.data['token'] })
 	} catch (err) {
 		const response = err.response
