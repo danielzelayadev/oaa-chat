@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { Login } from '../../containers'
-import { ACTIVATE_ACCOUNT } from '../../constants'
+import { ACTIVATE_ACCOUNT } from '../../components/Routes'
 import FlatButton from 'material-ui/FlatButton'
-import styles from './Landing.css'
 
 const flatButtonStyles = {
 	position: 'absolute',
@@ -11,7 +10,7 @@ const flatButtonStyles = {
 }
 
 const Landing = () => (
-	<div class={styles.landing}>
+	<div>
 		<Login />
 		<FlatButton style={{...flatButtonStyles, left: '10%'}} label="Sign Up" secondary={true} />
 		<Link to={ACTIVATE_ACCOUNT}>
