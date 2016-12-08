@@ -2,9 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 import { ActivateAccountContainer } from '../../containers'
 import { LANDING } from '../../components/Routes'
-import RaisedButton from 'material-ui/RaisedButton'
 import IconButton from 'material-ui/IconButton'
-import FlatButton from 'material-ui/FlatButton'
 
 const ActivateAccount = () => (
 	<div>
