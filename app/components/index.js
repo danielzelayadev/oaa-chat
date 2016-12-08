@@ -1,5 +1,6 @@
 export { default as App } from './App'
 export { default as LoginForm } from './LoginForm'
+export { default as ActivateAccountForm } from './ActivateAccountForm'
 export { default as Toastr } from './Toastr'
 export { default as Routes } from './Routes'
 export * from './Routes'

@@ -1,0 +1,12 @@
+.root {
+	position: absolute;
+    top: 20%;
+    left: 18%;
+    width: 65%;
+}
+
+.loader {
+	position: absolute;
+    top: 35%;
+    left: 43%;
+}
