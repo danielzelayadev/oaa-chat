@@ -1,16 +1,59 @@
 import React from 'react'
-import { Router, Route, browserHistory } from 'react-router'
-import { Landing, ActivateAccount } from '../../pages'
-import { LANDING, ACTIVATE_ACCOUNT } from '../../constants'
 import styles from './App.css'
+import Paper from 'material-ui/Paper'
+import { LANDING, ACTIVATE_ACCOUNT } from '../Routes'
+import { browserHistory } from 'react-router'
 
-const App = () => (
-	<div class={styles['chat-wrapper']}>
-		<Router history={browserHistory}>
-			<Route path={LANDING} component={Landing} />
-			<Route path={ACTIVATE_ACCOUNT} component={ActivateAccount} />
-		</Router>
-	</div>
-)
+const paperStyles = {
+  position: "relative",
+  background: "#e2f8ff",
+  margin: "90px 0"
+}
+
+const LANDING_DIMS = {
+  	width: 550,
+  	height: 450
+}
+
+const getPaperDims = (path) => {
+	switch (path) {
+		case LANDING:
+			return LANDING_DIMS
+		case ACTIVATE_ACCOUNT:
+			return {
+			  	width: 400,
+			  	height: 350
+			}
+	}
+
+	return LANDING_DIMS
+}
+
+class App extends React.Component {
+	constructor (props) {
+		super(props)
+		this.state = {
+			paperDims: getPaperDims(props.location.pathname)
+		}
+	}
+
+	componentDidMount () {
+		browserHistory
+			.listen(({ pathname }) => 
+					this.setState({ ...this.state, paperDims: getPaperDims(pathname) }))
+	}
+
+	render () {
+		const { paperDims } = this.state
+
+		return (
+			<div class={styles['chat-wrapper']}>
+				<Paper style={{ ...paperStyles, ...paperDims }} zDepth={2} >
+					{this.props.children}
+				</Paper>
+			</div>
+		)
+	}
+} 
 
 export default App
