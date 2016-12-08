@@ -18,17 +18,17 @@ const validate = ({ email, password }) => {
 	return errors
 }
 
-const LoginForm = ({ err, loading, login, handleSubmit }) => {
+const LoginForm = ({ err, loading, login, handleSubmit, dirty }) => {
 		return (
 			<div>
 				{ loading ? 
-						<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
-					<form onSubmit={handleSubmit(login)}>
+					<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
+					<form class={styles.root} onSubmit={handleSubmit(login)}>
 			        	<Field name="email" component={Input} floatingLabelText="Email" type="text" />
 			        	<Field name="password" component={Input} floatingLabelText="Password" type="password" />
 						<RaisedButton style={{ marginTop: '15px' }} type="submit" label="Log In" fullWidth={true} />
 						<Toastr title='Authentication Error' type='error' 
-						        timeout={5} message={err} show={ err && err.length > 0 } />
+						        timeout={5} message={err} show={ dirty && err && err.length > 0 } />
 					</form> 
 				}
 			</div>
