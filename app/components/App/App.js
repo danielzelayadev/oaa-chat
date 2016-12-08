@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './App.css'
 import Paper from 'material-ui/Paper'
-import { LANDING, ACTIVATE_ACCOUNT } from '../Routes'
+import { LANDING, ACTIVATE_ACCOUNT, REGISTER } from '../Routes'
 import { browserHistory } from 'react-router'
 
 const paperStyles = {
@@ -23,6 +23,11 @@ const getPaperDims = (path) => {
 			return {
 			  	width: 400,
 			  	height: 350
+			}
+		case REGISTER:
+			return {
+			  	width: 400,
+			  	height: 600
 			}
 	}
 
