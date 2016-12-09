@@ -3,6 +3,7 @@ import axios from 'axios'
 import { API } from '../constants'
 
 class AccountActivationStore {
+	@observable error
 	@observable pending = false
 	@observable activateFailed = false
 
@@ -14,7 +15,7 @@ class AccountActivationStore {
 		this.activateFailed = false
 
 		try {
-			await axios.post(`${API}/users/activate`, hash)
+			await axios.post(`${API}/users/activate`, {hash})
 		} catch (e) {
 			const response = e.response
 
