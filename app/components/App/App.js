@@ -27,7 +27,7 @@ const getPaperDims = (path) => {
 		case REGISTER:
 			return {
 			  	width: 400,
-			  	height: 600
+			  	height: 720
 			}
 	}
 
