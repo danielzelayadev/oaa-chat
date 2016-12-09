@@ -1,6 +1,7 @@
 .root {
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 .leftPane, .rightPane {
@@ -17,4 +18,22 @@
 .rightPane {
 	border-left: 1px solid #77DCFE;
 	width: 69%;
+}
+
+.header {
+	position: relative;
+	background: #493553;
+	height: 108px;
+	padding-left: 25px;
+	padding-right: 20px;
+}
+
+.headerText {
+	position: absolute;
+	top: 54%;
+    left: 25%;
+	color: #fff;
+	font-weight: 500;
+    font-size: 19px;
+    line-height: normal;
 }
