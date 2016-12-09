@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Register } from '../../containers'
+import { RegisterForm } from '../../components'
 import { LANDING } from '../../components/Routes'
 import IconButton from 'material-ui/IconButton'
 
@@ -11,7 +11,7 @@ const RegisterPage = () => (
 				arrow_back
 			</IconButton>
 		</Link>
-		<Register />
+		<RegisterForm />
 	</div>
 )
 
