@@ -14,8 +14,7 @@ const Routes = () => (
 			<Route path={LANDING} component={Landing} />
 			<Route path={ACTIVATE_ACCOUNT} component={ActivateAccount} />
 			<Route path={REGISTER} component={RegisterPage} />
-			<Route path={HOME} component={Home}>
-			</Route>
+			<Route path={HOME} component={Home} />
 		</Route>
 	</Router>
 )
