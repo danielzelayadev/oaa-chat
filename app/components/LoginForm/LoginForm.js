@@ -1,38 +1,47 @@
 import React from 'react'
 import Halogen from 'halogen'
-import { Field, reduxForm } from 'redux-form'
-import { Input } from '../Controls'
-import Toastr from '../Toastr'
-import RaisedButton from 'material-ui/RaisedButton'
+import { observer } from 'mobx-react'
 import styles from './LoginForm.css'
+import { SessionStore } from '../../stores'
+import { plugins } from '../../constants'
+import MobxReactForm from 'mobx-react-form'
+import RaisedButton from 'material-ui/RaisedButton'
+import Toastr from '../Toastr'
+import { Input } from '../Controls'
 
-const validate = ({ email, password }) => {
-	const errors = {}
 
-	if (!email)
-		errors.email = "Email is required."
-
-	if (!password)
-		errors.password = "Password is required."
-
-	return errors
+const fields = {
+  email: { label: 'Email', rules: 'required' },
+  password: { label: 'Password', rules: 'required' }
 }
 
-const LoginForm = ({ err, loading, login, handleSubmit, dirty }) => {
-		return (
-			<div>
-				{ loading ? 
-					<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
-					<form class={styles.root} onSubmit={handleSubmit(login)}>
-			        	<Field name="email" component={Input} floatingLabelText="Email" type="text" />
-			        	<Field name="password" component={Input} floatingLabelText="Password" type="password" />
-						<RaisedButton style={{ marginTop: '15px' }} type="submit" label="Log In" fullWidth={true} />
-						<Toastr title='Authentication Error' type='error' 
-						        timeout={5} message={err} show={ dirty && err && err.length > 0 } />
-					</form> 
-				}
-			</div>
-		)
+class Form extends MobxReactForm {
+	onSuccess (form) {
+		SessionStore.login(form.values())
+	}
+	onError (form) {}
 }
 
-export default reduxForm({ form: 'login', validate })(LoginForm)
+const form = new Form({ fields, plugins })
+
+const LoginForm = () => {
+	const { pending, error, loginFailed } = SessionStore
+	return (
+		<div>
+			{ pending ? 
+				<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
+				<form class={styles.root} onSubmit={form.onSubmit}>
+					<Input field={form.$('email')} />
+					<Input field={form.$('password')} type="password" />
+					<RaisedButton style={{ marginTop: '15px' }} type="submit"
+					              label="Log In" fullWidth={true} />
+					<Toastr title='Authentication Error' type='error' 
+					        timeout={5} message={error} 
+					        show={ form.isDirty && loginFailed } />
+				</form> 
+			}
+		</div>
+	)
+}
+
+export default observer(LoginForm)

@@ -1,23 +1,14 @@
 import React from 'react'
 import Halogen from 'halogen'
-import { Field, reduxForm } from 'redux-form'
 import { Input } from '../Controls'
 import Toastr from '../Toastr'
 import RaisedButton from 'material-ui/RaisedButton'
 import styles from './RegisterForm.css'
 
-const validate = vals => {
-	const errors = {}
-
-	return errors
+class RegisterForm extends React.Component {
+	render () {
+		return (<div></div>)
+	}
 }
 
-const RegisterForm = ({ handleSubmit, dirty }) => {
-		return (
-			<div>
-				Aqui
-			</div>
-		)
-}
-
-export default reduxForm({ form: 'register', validate })(RegisterForm)
+export default RegisterForm

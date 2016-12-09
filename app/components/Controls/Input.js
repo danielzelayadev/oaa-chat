@@ -1,10 +1,19 @@
 import React from 'react'
+import { observer } from 'mobx-react'
 import TextField from 'material-ui/TextField'
-import { blue500 } from 'material-ui/styles/colors'
 
-const Input = ({ input, meta, ...rest }) => (
-	<TextField {...input} {...rest} 
-		errorText={meta.touched && meta.error ? meta.error : ''} />
+const Input = ({ field, type = null }) => (
+   <TextField
+	  type={type || 'text'}
+	  name={field.name}
+	  value={field.value}
+	  floatingLabelText={field.label}
+	  hintText={field.placeholder}
+	  errorText={ field.touched && field.error }
+	  disabled={field.disabled}
+	  onChange={field.onChange}
+	  onFocus={field.onFocus}
+	  onBlur={field.onBlur}/>
 )
 
-export default Input
+export default observer(Input)

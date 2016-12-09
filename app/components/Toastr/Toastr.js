@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Toastr.css'
 
-const DEFAULT_TIMEOUT = 3
+const DEFAULT_TIMEOUT = 5
 
 const getStyles = (str, def) => {
 	if (str) {

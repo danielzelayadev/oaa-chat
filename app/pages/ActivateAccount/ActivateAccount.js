@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { ActivateAccountContainer } from '../../containers'
+import { ActivateAccountForm } from '../../components'
 import { LANDING } from '../../components/Routes'
 import IconButton from 'material-ui/IconButton'
 
@@ -11,7 +11,7 @@ const ActivateAccount = () => (
 				arrow_back
 			</IconButton>
 		</Link>
-		<ActivateAccountContainer />
+		<ActivateAccountForm />
 	</div>
 )
 

@@ -1,38 +1,52 @@
 import React from 'react'
 import Halogen from 'halogen'
-import { Field, reduxForm } from 'redux-form'
+import { observer } from 'mobx-react'
+import styles from './ActivateAccountForm.css'
+import { AccountActivationStore } from '../../stores'
+import { plugins } from '../../constants'
+import MobxReactForm from 'mobx-react-form'
+import RaisedButton from 'material-ui/RaisedButton'
 import Toastr from '../Toastr'
 import { Input } from '../Controls'
-import RaisedButton from 'material-ui/RaisedButton'
-import styles from './ActivateAccountForm.css'
 
-const validate = ({ hash }) => {
-	const errors = {}
-
-	if (!hash)
-		errors.hash = 'Activation code is required.'
-
-	return errors
+const fields = {
+  code: { label: 'Activation Code', rules: 'required' }
 }
 
-const ActivateAccountForm = ({ activateAccount, success, loading, err, handleSubmit, dirty }) => {
-	return (
-		<div>
-			{ loading ? 
-				<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
-				<form class={styles.root} onSubmit={handleSubmit(activateAccount)}>
-					<Field name="hash" component={Input} fullWidth={true} 
-					       floatingLabelText="Activation Code" type="text" />
-					<RaisedButton style={{ marginTop: '15px' }} type="submit" label="Activate" fullWidth={true} />
-					<Toastr title='Activation Error' type='error' 
-					        timeout={5} message={err} show={ dirty && err && err.length > 0 } />
-					<Toastr title='Success' type='success' timeout={5} 
-					        message="Account successfully activated!" 
-					        show={ dirty && success } />
-				</form> 
-			}
-		</div>
-	)
+class Form extends MobxReactForm {
+	onSuccess (form) {
+		AccountActivationStore.activate(form.values().code)
+	}
+	onError (form) {}
 }
 
-export default reduxForm({ form: 'activateAccount', validate })(ActivateAccountForm)
+const form = new Form({ fields, plugins })
+
+@observer class ActivateAccountForm extends React.Component {
+	componentWillUnmount() {
+		form.clear()
+	}
+
+	render () {
+		const { activateFailed, pending, error } = AccountActivationStore
+		return (
+			<div>
+				{ pending ? 
+					<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
+					<form class={styles.root} onSubmit={form.onSubmit}>
+						<Input field={form.$('code')} />
+						<RaisedButton style={{ marginTop: '15px' }} type="submit" 
+						              label="Activate" fullWidth={true} />
+						<Toastr title='Activation Error' type='error' message={error} 
+						        show={ form.isDirty && activateFailed } />
+						<Toastr title='Success' type='success'
+						        message="Account successfully activated!" 
+						        show={ form.isDirty && !activateFailed } />
+					</form> 
+				}
+			</div>
+		)
+	}
+}
+
+export default ActivateAccountForm
