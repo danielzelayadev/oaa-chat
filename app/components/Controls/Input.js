@@ -2,7 +2,7 @@ import React from 'react'
 import { observer } from 'mobx-react'
 import TextField from 'material-ui/TextField'
 
-const Input = ({ field, type = null }) => (
+const Input = ({ field, type = null, ...rest }) => (
    <TextField
 	  type={type || 'text'}
 	  name={field.name}
@@ -13,7 +13,8 @@ const Input = ({ field, type = null }) => (
 	  disabled={field.disabled}
 	  onChange={field.onChange}
 	  onFocus={field.onFocus}
-	  onBlur={field.onBlur}/>
+	  onBlur={field.onBlur}
+	  {...rest} />
 )
 
 export default observer(Input)
