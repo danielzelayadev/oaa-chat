@@ -1,5 +1,7 @@
 import React from 'react'
 import Halogen from 'halogen'
+import { browserHistory } from 'react-router'
+import { HOME } from '../Routes'
 import { observer } from 'mobx-react'
 import styles from './LoginForm.css'
 import { SessionStore } from '../../stores'
@@ -16,8 +18,11 @@ const fields = {
 }
 
 class Form extends MobxReactForm {
-	onSuccess (form) {
-		SessionStore.login(form.values())
+	async onSuccess (form) {
+		await SessionStore.login(form.values())
+
+		if (SessionStore.loggedIn)
+			browserHistory.push(HOME)
 	}
 	onError (form) {}
 }
