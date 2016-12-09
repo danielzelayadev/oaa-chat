@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { UIStore } from '../../stores'
+import { browserHistory } from 'react-router'
+import { SessionStore, UIStore } from '../../stores'
+import { LANDING } from '../../components'
 import { observer } from 'mobx-react'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import AppBar from 'material-ui/AppBar'
@@ -20,6 +22,11 @@ const avatarStyles = {
 	marginLeft: 6
 }
 
+const logout = e => {
+	SessionStore.logout()
+	browserHistory.push(LANDING)
+}
+
 const Options = props => (
 	 <IconMenu {...props} menuStyle={{ width: 140 }} 
 	 	iconButtonElement={<IconButton iconStyle={{ color: 'white' }}><MoreVertIcon /></IconButton>}
@@ -30,7 +37,7 @@ const Options = props => (
 	    <MenuItem primaryText="Friends" />
 	    <MenuItem primaryText="Rooms" />
 	    <MenuItem primaryText="People" />
-	    <MenuItem primaryText="Log out" />
+	    <MenuItem primaryText="Log out" onClick={logout} />
  	 </IconMenu>
 )
 
