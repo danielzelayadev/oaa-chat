@@ -1,4 +1,4 @@
-import { observable, autorun, action } from 'mobx'
+import { observable, computed, action } from 'mobx'
 import axios from 'axios'
 import { API } from '../constants'
 
@@ -9,6 +9,10 @@ class SessionStore {
 	@observable loggedIn = false
 	@observable pending = false
 	@observable loginFailed = false
+
+	@computed get fullname() {
+		return this.user ? `${this.user.firstname} ${this.user.lastname}` : ''
+	}
 
 	@action async login (creds) {
 		if (this.loggedIn || this.pending)
