@@ -22,26 +22,31 @@ class Form extends MobxReactForm {
 	onError (form) {}
 }
 
-const form = new Form({ fields, plugins })
+let form
 
-const LoginForm = () => {
-	const { pending, error, loginFailed } = SessionStore
-	return (
-		<div>
-			{ pending ? 
-				<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
-				<form class={styles.root} onSubmit={form.onSubmit}>
-					<Input field={form.$('email')} />
-					<Input field={form.$('password')} type="password" />
-					<RaisedButton style={{ marginTop: '15px' }} type="submit"
-					              label="Log In" fullWidth={true} />
-					<Toastr title='Authentication Error' type='error' 
-					        timeout={5} message={error} 
-					        show={ form.isDirty && loginFailed } />
-				</form> 
-			}
-		</div>
-	)
+@observer class LoginForm extends React.Component {
+	componentWillMount() {
+		form = new Form({ fields, plugins })
+	}
+	render () {
+		const { pending, error, loginFailed } = SessionStore
+		return (
+			<div>
+				{ pending ? 
+					<Halogen.ClipLoader class={styles.loader} color='#5e8f9b' /> :
+					<form class={styles.root} onSubmit={form.onSubmit}>
+						<Input field={form.$('email')} />
+						<Input field={form.$('password')} type="password" />
+						<RaisedButton style={{ marginTop: '15px' }} type="submit"
+						              label="Log In" fullWidth={true} />
+						<Toastr title='Authentication Error' type='error' 
+						        timeout={5} message={error} 
+						        show={ form.isDirty && loginFailed } />
+					</form> 
+				}
+			</div>
+		)
+	}
 }
 
-export default observer(LoginForm)
+export default LoginForm
