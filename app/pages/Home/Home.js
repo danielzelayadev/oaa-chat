@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import { SessionStore, UIStore } from '../../stores'
-import { LANDING, Profile, Drawer } from '../../components'
+import { LANDING, Profile, Drawer, NewRoom } from '../../components'
 import { observer } from 'mobx-react'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import AppBar from 'material-ui/AppBar'
@@ -12,7 +12,8 @@ import MenuItem from 'material-ui/MenuItem'
 import styles from './Home.css'
 
 const headerStyles = {
-	position: 'absolute'
+	position: 'absolute',
+	backgroundColor: '#493553'
 }
 
 const avatarStyles = {
@@ -26,7 +27,7 @@ const logout = e => {
 }
 
 const leftPaneComponents = [ 
-	{ name: 'New Room', component: null }, 
+	{ name: 'New Room', component: <NewRoom /> }, 
 	{ name: 'Profile', component: <Profile store={SessionStore} /> },
 	{ name: 'Friends', component: null }, 
 	{ name: 'Rooms', component: null }, 
