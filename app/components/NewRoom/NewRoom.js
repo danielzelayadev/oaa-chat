@@ -46,7 +46,7 @@ let drawerStore
 		const { avatarData, name } = NewRoomStore
 		const showSubmit = name.length > 0
 		return (
-			<div>
+			<div style={{ overflowY: 'auto', height: '100%' }}>
 				<div class={styles.avatar} onClick={this.uploadWindow.bind(this)}>
 					<input id={avatarUploadId} type="file" style={{visibility: "hidden"}} />
 					<img src={ avatarData || defaultAvatar} class={styles.img} />
@@ -68,8 +68,9 @@ let drawerStore
 					<i class="material-icons">arrow_forward</i>
 				</FloatingActionButton>
 				<Drawer show={ drawerStore.drawerIsOpen } closing={drawerStore.drawerClosing}>
-					<DrawerHeader title={drawerStore.drawer} close={() => drawerStore.closeDrawer()} />
-					<AddRoomParticipants store={NewRoomStore} />
+					<DrawerHeader title={drawerStore.drawer} 
+					              close={() => { NewRoomStore.members = []; drawerStore.closeDrawer(); }} />
+					<AddRoomParticipants store={NewRoomStore} drawer={drawerStore} />
 				</Drawer>
 			</div>
 		)

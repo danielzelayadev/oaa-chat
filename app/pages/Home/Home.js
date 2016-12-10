@@ -68,7 +68,9 @@ let drawerStore
 					        iconElementRight={<Options/>} />
 						<Drawer show={ drawerStore.drawerIsOpen } closing={drawerStore.drawerClosing}>
 							<DrawerHeader title={drawerStore.drawer} close={() => drawerStore.closeDrawer()} />
-							{ renderDrawerContent() }
+							<div style={{ height: '82.439%' }}>
+								{ renderDrawerContent() }
+							</div>
 						</Drawer>
 				</div>
 				<div class={styles.rightPane}>

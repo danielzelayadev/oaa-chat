@@ -16,7 +16,7 @@ class Profile extends Component {
 	render () {
 		const { user } = this.props.store
 		return (
-			<div class={styles.profileContent}>
+			<div style={{ overflowY: 'auto', height: '100%' }}>
 				<Avatar src={user.avatar} style={avatarStyles} />
 				<DrawerLabel name="Email" value={user.email} />
 				<DrawerLabel name="Username" value={user.username} />
