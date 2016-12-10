@@ -1,0 +1,9 @@
+.showSubmit {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.hideSubmit {
+    transform: scale(0);
+    opacity: 0;
+}
