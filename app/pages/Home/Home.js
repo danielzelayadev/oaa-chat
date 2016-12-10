@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import { SessionStore, DrawerStore } from '../../stores'
 import { getUserProfileProps, drawerIsOpen } from '../../utils'
-import { LANDING, Profile, Drawer, Friends, People, DrawerHeader, NewRoom } from '../../components'
+import { LANDING, Profile, Drawer, Friends, People, Rooms, DrawerHeader, NewRoom } from '../../components'
 import { observer } from 'mobx-react'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import AppBar from 'material-ui/AppBar'
@@ -31,7 +31,7 @@ const leftPaneComponents = [
 	{ name: 'New Room', component: <NewRoom /> }, 
 	{ name: 'Profile', component: <Profile {...getUserProfileProps(SessionStore.user)} /> },
 	{ name: 'Friends', component: <Friends /> }, 
-	{ name: 'Rooms', component: null }, 
+	{ name: 'Rooms', component: <Rooms /> }, 
 	{ name: 'People', component: <People /> } 
 ]
 
