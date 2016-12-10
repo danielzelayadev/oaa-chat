@@ -6,12 +6,23 @@ class SessionStore {
 	@observable token
 	@observable user
 	@observable error
-	@observable loggedIn = false
 	@observable pending = false
 	@observable loginFailed = false
 
+	constructor () {
+		const userstr = window.localStorage['user']
+		const tokenstr = window.localStorage['token']
+
+		this.token = tokenstr ? tokenstr : ""
+		this.user = userstr ? JSON.parse(userstr) : ""
+	}
+
 	@computed get fullname() {
 		return this.user ? `${this.user.firstname} ${this.user.lastname}` : ''
+	}
+
+	@computed get loggedIn () {
+		return this.user !== ""
 	}
 
 	@action async login (creds) {
@@ -24,9 +35,9 @@ class SessionStore {
 		try {
 			const response = await axios.post(`${API}/login`, creds)
 			const { token, ...user } = response.data
-			this.token = token
+			this.token = window.localStorage['token'] = token
 			this.user = user
-			this.loggedIn = true
+			window.localStorage['user'] = JSON.stringify(user)
 		} catch (e) {
 			const response = e.response
 
@@ -43,9 +54,8 @@ class SessionStore {
 	}
 
 	@action logout () {
-		this.token = ""
-		this.user = undefined
-		this.loggedIn = false
+		this.token = window.localStorage['token'] = ""
+		this.user = window.localStorage['user'] = ""
 	}
 
 }
