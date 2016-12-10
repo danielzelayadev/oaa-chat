@@ -1,0 +1,16 @@
+.root {
+	position: relative;
+	height: 108px;
+	padding-left: 25px;
+	padding-right: 20px;
+}
+
+.title {
+	position: absolute;
+	top: 54%;
+    left: 25%;
+	color: #fff;
+	font-weight: 500;
+    font-size: 19px;
+    line-height: normal;
+}
