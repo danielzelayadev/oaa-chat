@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import { SessionStore, DrawerStore } from '../../stores'
-import { LANDING, Profile, Drawer, NewRoom } from '../../components'
+import { LANDING, Profile, Drawer, DrawerHeader, NewRoom } from '../../components'
 import { observer } from 'mobx-react'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import AppBar from 'material-ui/AppBar'
@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
 import styles from './Home.css'
 
-const headerStyles = {
+const appBarStyles = {
 	position: 'absolute',
 	backgroundColor: '#493553'
 }
@@ -62,20 +62,12 @@ let drawerStore
 		return (
 			<div class={styles.root}>
 				<div class={styles.leftPane}>
-					<AppBar style={headerStyles}	
+					<AppBar style={appBarStyles}	
 					        iconElementLeft={<Avatar src={SessionStore.user.avatar} style={avatarStyles} 
 					        onClick={e => drawerStore.setDrawer("Profile")} />}
 					        iconElementRight={<Options/>} />
 						<Drawer show={ drawerStore.drawerIsOpen } closing={drawerStore.drawerClosing}>
-							<div class={styles.header}>
-								<IconButton iconClassName="material-icons" 
-								            iconStyle={{color: '#7B85AD'}}
-								            style={{ top: '42%' }}
-								            onClick={e => drawerStore.closeDrawer()}>
-									arrow_back
-								</IconButton>
-								<span class={styles.headerText}>{drawerStore.drawer}</span>
-							</div>
+							<DrawerHeader title={drawerStore.drawer} close={() => drawerStore.closeDrawer()} />
 							{ renderDrawerContent() }
 						</Drawer>
 				</div>
