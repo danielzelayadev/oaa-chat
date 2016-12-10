@@ -1,6 +1,7 @@
 import { observable, computed, action } from 'mobx'
 import axios from 'axios'
 import { API } from '../constants'
+import { SessionStore } from '.'
 
 class NewRoomStore {
 	@observable admin
@@ -22,8 +23,18 @@ class NewRoomStore {
 	    reader.onload = e => this.avatarData = reader.result
 	    reader.readAsDataURL(this.avatar)
 	}
+
+	@action addMember (username) {
+		this.members = [ ...this.members, username ]
+	}
+
+	@action removeMember (username) {
+		this.members = this.members.filter(e => e !== username)
+	}
  
 	@action async create () {
+		this.admin = SessionStore.user.username
+		console.log(this.admin, this.name, this.avatar.name, this.members.slice())
 		// if (this.pending)
 		// 	return
 
