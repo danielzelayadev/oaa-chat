@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import { SessionStore, NewRoomStore, DrawerStore } from '../../stores'
+import { drawerIsOpen } from '../../utils'
 import { Drawer, DrawerHeader, AddRoomParticipants } from '..'
 import defaultAvatar from '../../res/default-group.png'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
@@ -19,14 +20,10 @@ const submitStyles = {
     top: '75%'
 }
 
-let drawerStore
+let drawerId
 
 @observer class NewRoom extends Component {
-	componentWillMount () {
-		drawerStore = new DrawerStore
-	}
-
-	componentWillUnmount() {
+	componentWillMount() {
 		NewRoomStore.clear()
 	}
 
@@ -63,15 +60,18 @@ let drawerStore
 				</div>
 				<FloatingActionButton className={ showSubmit ? styles.showSubmit : styles.hideSubmit } 
 				                      style={submitStyles}
-				                      onClick={() => drawerStore.setDrawer("Add Room Participants")} 
+				                      onClick={() => drawerId = DrawerStore.push()} 
 				                      backgroundColor="#493553">
 					<i class="material-icons">arrow_forward</i>
 				</FloatingActionButton>
-				<Drawer show={ drawerStore.drawerIsOpen } closing={drawerStore.drawerClosing}>
-					<DrawerHeader title={drawerStore.drawer} 
-					              close={() => { NewRoomStore.members = []; drawerStore.closeDrawer(); }} />
-					<AddRoomParticipants store={NewRoomStore} drawer={drawerStore} />
-				</Drawer>
+				{
+					drawerIsOpen(drawerId, DrawerStore.drawers) ?
+					<Drawer closing={DrawerStore.drawerClosing == drawerId}>
+						<DrawerHeader title="Add Room Participants"
+						              close={() => { NewRoomStore.members = []; DrawerStore.pop(); }} />
+						<AddRoomParticipants store={NewRoomStore} />
+					</Drawer> : null
+				}
 			</div>
 		)
 	}

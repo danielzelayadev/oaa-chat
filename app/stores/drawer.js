@@ -1,24 +1,24 @@
 import { observable, action, computed } from 'mobx'
 
 class DrawerStore {
-	@observable drawer
-	@observable drawerClosing = false
+	@observable drawers = 0
+	@observable drawerClosing = 0
 
-	@action setDrawer (drawer) {
-		this.drawer = drawer
+	@action push () {
+		return ++this.drawers
 	}
 
-	@action closeDrawer () {
-		this.drawerClosing = true
+	@action pop (all = undefined) {
+		this.drawerClosing = this.drawers
 		setTimeout(() => {
-			this.drawer = undefined
-			this.drawerClosing = false
+			if (all === 0)
+				this.drawers = 0
+			else
+				this.drawers--
+			console.log(this.drawers)
+			this.drawerClosing = 0
 		}, 350)
-	}
-
-	@computed get drawerIsOpen () {
-		return this.drawer !== undefined
 	}
 }
 
-export default DrawerStore
+export default new DrawerStore

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import { SessionStore } from '../../stores'
+import { SessionStore, DrawerStore } from '../../stores'
 import TextField from 'material-ui/TextField'
 import {List, ListItem} from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
@@ -18,9 +18,9 @@ import styles from './AddRoomParticipants.css'
 	}
 
 	createRoom () {
-		const { store, drawer } = this.props
+		const { store } = this.props
 		store.create()
-		drawer.closeDrawer()
+		DrawerStore.pop(0)
 	}
 
 	render () {
