@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SessionStore, DrawerStore } from '../../stores'
+import { SessionStore, UsersStore, DrawerStore } from '../../stores'
 import { Profile, Drawer, DrawerHeader } from '..'
 import { getUserProfileProps, drawerIsOpen } from '../../utils'
 import { FilterList } from '../../components'
@@ -8,21 +8,27 @@ import { observer } from 'mobx-react'
 let drawerId, drawerTitle, profileProps
 
 const getItems = () => {
-	const { user: { friends } } = SessionStore
-	return friends.map(e => ({ primaryText: e.username, avatar: e.avatar, data: e }))
+	const { users } = UsersStore
+	return users.map(e => ({ primaryText: e.username, avatar: e.avatar, data: e }))
 }
 
 const listItemProps = {
 
 }
 
-const onListItemClick = friend => {
-	drawerTitle = `${friend.firstname} ${friend.lastname}'s Profile`
-	profileProps = getUserProfileProps(friend)
+const onListItemClick = user => {
+	const isFriend = SessionStore.isFriend(user)
+	drawerTitle = `${user.firstname} ${user.lastname}'s Profile`
+	profileProps = getUserProfileProps(user)
 	profileProps.actions = [
-		{ label: 'Unfriend', backgroundColor: '#B71C1C', labelColor: '#fff',
+		{ label: isFriend ? 'Unfriend' : 'Friend', 
+		  backgroundColor: isFriend ? '#B71C1C' : '#fff', 
+		  labelColor: isFriend ? '#fff' : '#000',
 		  onClick: () => {
-		  	SessionStore.unfriend(friend)
+		  	if (isFriend)
+		  		SessionStore.unfriend(user)
+		  	else
+		  		SessionStore.friend(user)
 		  	DrawerStore.pop()
 		  } 
 		}
@@ -30,10 +36,10 @@ const onListItemClick = friend => {
 	drawerId = DrawerStore.push()
 }
 
-const Friends = props => {
+const People = props => {
 	return (
 		<div style={{ height: '100%' }}>
-			<FilterList items={getItems()} hintText="Type friend username"
+			<FilterList items={getItems()} hintText="Type a username"
 					onListItemClick={onListItemClick}
 	            	listItemProps={listItemProps} />
 	        {
@@ -49,4 +55,4 @@ const Friends = props => {
 	)
 }
 
-export default observer(Friends)
+export default observer(People)
