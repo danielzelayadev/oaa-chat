@@ -17,7 +17,7 @@ class UIStore {
 	}
 
 	@computed get drawerIsOpen () {
-		return drawer !== undefined
+		return this.drawer !== undefined
 	}
 }
 
