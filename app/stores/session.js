@@ -82,6 +82,10 @@ class SessionStore {
 		this.user = window.localStorage['user'] = ""
 	}
 
+	@action unfriend (friend) {
+		this.user.friends = this.user.friends.filter(e => e.username !== friend.username)
+	}
+
 }
 
 export default new SessionStore
