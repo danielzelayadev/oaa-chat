@@ -1,34 +1,34 @@
 import React, { Component } from 'react'
-import { SessionStore, UsersStore, DrawerStore } from '../../stores'
+import { SessionStore, RoomsStore, DrawerStore } from '../../stores'
 import { Profile, Drawer, DrawerHeader } from '..'
-import { getUserProfileProps, drawerIsOpen } from '../../utils'
+import { getRoomProfileProps, drawerIsOpen } from '../../utils'
 import { FilterList } from '../../components'
 import { observer } from 'mobx-react'
 
 let drawerId, drawerTitle, profileProps
 
 const getItems = () => {
-	const { users } = UsersStore
-	return users.map(e => ({ primaryText: e.username, avatar: e.avatar, data: e }))
+	const { rooms } = RoomsStore
+	return rooms.map(e => ({ primaryText: e.name, avatar: e.avatar, data: e }))
 }
 
 const listItemProps = {
 
 }
 
-const onListItemClick = user => {
-	const isFriend = SessionStore.isFriend(user)
-	drawerTitle = `${user.firstname} ${user.lastname}'s Profile`
-	profileProps = getUserProfileProps(user)
+const onListItemClick = room => {
+	const isInRoom = SessionStore.isInRoom(room)
+	drawerTitle = room.name 
+	profileProps = getRoomProfileProps(room)
 	profileProps.actions = [
-		{ label: isFriend ? 'Unfriend' : 'Friend', 
-		  backgroundColor: isFriend ? '#B71C1C' : '#fff', 
-		  labelColor: isFriend ? '#fff' : '#000',
+		{ label: isInRoom ? 'Exit' : 'Join', 
+		  backgroundColor: isInRoom ? '#B71C1C' : '#fff', 
+		  labelColor: isInRoom ? '#fff' : '#000',
 		  onClick: () => {
-		  	if (isFriend)
-		  		SessionStore.unfriend(user)
+		  	if (isInRoom)
+		  		SessionStore.join(room)
 		  	else
-		  		SessionStore.friend(user)
+		  		SessionStore.exit(room)
 		  	DrawerStore.pop()
 		  } 
 		}
@@ -39,7 +39,7 @@ const onListItemClick = user => {
 const Rooms = props => {
 	return (
 		<div style={{ height: '100%' }}>
-			<FilterList items={getItems()} hintText="Type a username"
+			<FilterList items={getItems()} hintText="Type room name"
 					onListItemClick={onListItemClick}
 	            	listItemProps={listItemProps} />
 	        {

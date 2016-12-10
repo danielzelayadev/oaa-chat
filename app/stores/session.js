@@ -19,6 +19,7 @@ class SessionStore {
 		this.token = tokenstr ? tokenstr : ""
 		this.user = userstr ? JSON.parse(userstr) : ""
 		this.user.friends = []
+		this.user.rooms = []
 	}
 
 	@computed get filteredFriends() {
@@ -75,8 +76,21 @@ class SessionStore {
 		this.user.friends = this.user.friends.filter(e => e.username !== friend.username)
 	}
 
+	@action join (room) {
+		this.user.rooms.push(room)
+	}
+
+	@action exit (room) {
+		this.user.rooms = this.user.rooms.filter(e => e.name !== room.name)
+	}
+
 	isFriend (user) {
 		return this.user.friends.filter(e => e.username === user.username).length > 0
+	}
+
+	isInRoom (room) {
+		return room.admin === this.user.username ||
+	           room.members.filter(e => e.username === this.user.username).length > 0
 	}
 
 }

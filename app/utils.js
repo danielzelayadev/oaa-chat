@@ -13,4 +13,11 @@ export const getUserProfileProps = user => ({
 	]
 })
 
+export const getRoomProfileProps = room => ({
+	avatar: room.avatar,
+	details: [
+		{ name: "Admin", value: room.admin }
+	]
+})
+
 export const drawerIsOpen = (id, drawers) => id > 0 && id <= drawers
