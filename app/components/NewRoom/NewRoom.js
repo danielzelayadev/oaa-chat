@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import { SessionStore, NewRoomStore } from '../../stores'
+import { SessionStore, NewRoomStore, DrawerStore } from '../../stores'
+import { Drawer, DrawerHeader, AddRoomParticipants } from '..'
 import defaultAvatar from '../../res/default-group.png'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import TextField from 'material-ui/TextField'
@@ -18,9 +19,13 @@ const submitStyles = {
     top: '75%'
 }
 
-const Test = observer(props => (<TextField {...props}/>))
+let drawerStore
 
 @observer class NewRoom extends Component {
+	componentWillMount () {
+		drawerStore = new DrawerStore
+	}
+
 	componentWillUnmount() {
 		NewRoomStore.clear()
 	}
@@ -57,10 +62,15 @@ const Test = observer(props => (<TextField {...props}/>))
 					           style={textFieldStyles} />
 				</div>
 				<FloatingActionButton className={ showSubmit ? styles.showSubmit : styles.hideSubmit } 
-				                      style={submitStyles} 
+				                      style={submitStyles}
+				                      onClick={() => drawerStore.setDrawer("Add Room Participants")} 
 				                      backgroundColor="#493553">
 					<i class="material-icons">arrow_forward</i>
 				</FloatingActionButton>
+				<Drawer show={ drawerStore.drawerIsOpen } closing={drawerStore.drawerClosing}>
+					<DrawerHeader title={drawerStore.drawer} close={() => drawerStore.closeDrawer()} />
+					<AddRoomParticipants store={NewRoomStore} />
+				</Drawer>
 			</div>
 		)
 	}
