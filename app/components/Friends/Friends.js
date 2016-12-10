@@ -19,6 +19,14 @@ const listItemProps = {
 const onListItemClick = friend => {
 	drawerTitle = `${friend.firstname} ${friend.lastname}'s Profile`
 	profileProps = getUserProfileProps(friend)
+	profileProps.actions = [
+		{ label: 'Unfriend', backgroundColor: '#B71C1C', labelColor: '#fff',
+		  onClick: () => {
+		  	SessionStore.unfriend(friend)
+		  	DrawerStore.pop()
+		  } 
+		}
+	]
 	drawerId = DrawerStore.push()
 }
 
