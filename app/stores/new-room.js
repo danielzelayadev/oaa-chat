@@ -61,4 +61,4 @@ class NewRoomStore {
 	}
 }
 
-export default new NewRoomStore()
+export default new NewRoomStore

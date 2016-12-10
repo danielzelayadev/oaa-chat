@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { SessionStore, UIStore } from '../../stores'
+import { SessionStore, DrawerStore } from '../../stores'
 import { LANDING, Profile, Drawer, NewRoom } from '../../components'
 import { observer } from 'mobx-react'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
@@ -40,35 +40,41 @@ const Options = observer(props => (
     	targetOrigin={{horizontal: 'right', vertical: 'top'}}
     	anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
     	{ leftPaneComponents.map((c, i) => (
-    		<MenuItem key={i} primaryText={c.name} onClick={e => UIStore.setDrawer(c.name) } />
+    		<MenuItem key={i} primaryText={c.name} onClick={e => drawerStore.setDrawer(c.name) } />
     	)) }
 	    <MenuItem primaryText="Log out" onClick={logout} />
  	 </IconMenu>
 ))
 
 const renderDrawerContent = () => {
-	const res = leftPaneComponents.filter(e => e.name === UIStore.drawer)[0]
+	const res = leftPaneComponents.filter(e => e.name === drawerStore.drawer)[0]
 	return res ? res.component : null
 }
 
+let drawerStore
+
 @observer class Home extends Component {
+	componentWillMount() {
+		drawerStore = new DrawerStore
+	}
+
 	render () {
 		return (
 			<div class={styles.root}>
 				<div class={styles.leftPane}>
 					<AppBar style={headerStyles}	
 					        iconElementLeft={<Avatar src={SessionStore.user.avatar} style={avatarStyles} 
-					        onClick={e => UIStore.setDrawer("Profile")} />}
+					        onClick={e => drawerStore.setDrawer("Profile")} />}
 					        iconElementRight={<Options/>} />
-						<Drawer show={ UIStore.drawerIsOpen } closing={UIStore.drawerClosing}>
+						<Drawer show={ drawerStore.drawerIsOpen } closing={drawerStore.drawerClosing}>
 							<div class={styles.header}>
 								<IconButton iconClassName="material-icons" 
 								            iconStyle={{color: '#7B85AD'}}
 								            style={{ top: '42%' }}
-								            onClick={e => UIStore.closeDrawer()}>
+								            onClick={e => drawerStore.closeDrawer()}>
 									arrow_back
 								</IconButton>
-								<span class={styles.headerText}>{UIStore.drawer}</span>
+								<span class={styles.headerText}>{drawerStore.drawer}</span>
 							</div>
 							{ renderDrawerContent() }
 						</Drawer>

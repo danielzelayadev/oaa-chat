@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx'
 
-class UIStore {
+class DrawerStore {
 	@observable drawer
 	@observable drawerClosing = false
 
@@ -21,4 +21,4 @@ class UIStore {
 	}
 }
 
-export default new UIStore
+export default DrawerStore
