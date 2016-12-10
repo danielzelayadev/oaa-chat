@@ -14,15 +14,15 @@ const avatarStyles = {
 
 class Profile extends Component {
 	render () {
-		const { user } = this.props.store
+		const { avatar, details } = this.props
 		return (
 			<div style={{ overflowY: 'auto', height: '100%' }}>
-				<Avatar src={user.avatar} style={avatarStyles} />
-				<DrawerLabel name="Email" value={user.email} />
-				<DrawerLabel name="Username" value={user.username} />
-				<DrawerLabel name="Name" value={this.props.store.fullname} />
-				<DrawerLabel name="Age" value={user.age} />
-				<DrawerLabel name="Birthday" value={user.birthday} />
+				{ avatar ? <Avatar src={avatar} style={avatarStyles} /> : null}
+				{
+					details.map((e, i) => (
+						<DrawerLabel key={i} name={e.name} value={e.value} />
+					))
+				}
 			</div>
 		)
 	}

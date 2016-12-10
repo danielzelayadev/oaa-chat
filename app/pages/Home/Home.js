@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import { SessionStore, DrawerStore } from '../../stores'
-import { LANDING, Profile, Drawer, DrawerHeader, NewRoom } from '../../components'
+import { getUserProfileProps, drawerIsOpen } from '../../utils'
+import { LANDING, Profile, Drawer, Friends, DrawerHeader, NewRoom } from '../../components'
 import { observer } from 'mobx-react'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import AppBar from 'material-ui/AppBar'
@@ -28,11 +29,16 @@ const logout = e => {
 
 const leftPaneComponents = [ 
 	{ name: 'New Room', component: <NewRoom /> }, 
-	{ name: 'Profile', component: <Profile store={SessionStore} /> },
-	{ name: 'Friends', component: null }, 
+	{ name: 'Profile', component: <Profile {...getUserProfileProps(SessionStore.user)} /> },
+	{ name: 'Friends', component: <Friends /> }, 
 	{ name: 'Rooms', component: null }, 
 	{ name: 'People', component: null } 
 ]
+
+const pushDrawer = title => {
+	drawerTitle = title
+	drawerId = DrawerStore.push()
+}
 
 const Options = observer(props => (
 	 <IconMenu {...props} menuStyle={{ width: 140 }} 
@@ -40,38 +46,39 @@ const Options = observer(props => (
     	targetOrigin={{horizontal: 'right', vertical: 'top'}}
     	anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
     	{ leftPaneComponents.map((c, i) => (
-    		<MenuItem key={i} primaryText={c.name} onClick={e => drawerStore.setDrawer(c.name) } />
+    		<MenuItem key={i} primaryText={c.name} onClick={e => pushDrawer(c.name) } />
     	)) }
 	    <MenuItem primaryText="Log out" onClick={logout} />
  	 </IconMenu>
 ))
 
 const renderDrawerContent = () => {
-	const res = leftPaneComponents.filter(e => e.name === drawerStore.drawer)[0]
+	const res = leftPaneComponents.filter(e => e.name === drawerTitle)[0]
 	return res ? res.component : null
 }
 
 let drawerStore
+let drawerTitle = ""
+let drawerId
 
 @observer class Home extends Component {
-	componentWillMount() {
-		drawerStore = new DrawerStore
-	}
-
 	render () {
 		return (
 			<div class={styles.root}>
 				<div class={styles.leftPane}>
 					<AppBar style={appBarStyles}	
 					        iconElementLeft={<Avatar src={SessionStore.user.avatar} style={avatarStyles} 
-					        onClick={e => drawerStore.setDrawer("Profile")} />}
+					        onClick={e => pushDrawer("Profile")} />}
 					        iconElementRight={<Options/>} />
-						<Drawer show={ drawerStore.drawerIsOpen } closing={drawerStore.drawerClosing}>
-							<DrawerHeader title={drawerStore.drawer} close={() => drawerStore.closeDrawer()} />
-							<div style={{ height: '82.439%' }}>
-								{ renderDrawerContent() }
-							</div>
-						</Drawer>
+						{
+							drawerIsOpen(drawerId, DrawerStore.drawers) ?
+							<Drawer closing={DrawerStore.drawerClosing == drawerId}>
+								<DrawerHeader title={drawerTitle} close={() => DrawerStore.pop()} />
+								<div style={{ height: '82.439%' }}>
+									{ renderDrawerContent() }
+								</div>
+							</Drawer> : null
+						}
 				</div>
 				<div class={styles.rightPane}>
 				</div>
