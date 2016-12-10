@@ -1,4 +1,4 @@
-members: [], import { observable, computed, action } from 'mobx'
+import { observable, computed, action } from 'mobx'
 import axios from 'axios'
 import { API } from '../constants'
 
