@@ -15,7 +15,7 @@ class DrawerStore {
 				this.drawers = 0
 			else
 				this.drawers--
-			console.log(this.drawers)
+			
 			this.drawerClosing = 0
 		}, 350)
 	}

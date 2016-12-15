@@ -27,14 +27,6 @@ const logout = e => {
 	browserHistory.push(LANDING)
 }
 
-const leftPaneComponents = [ 
-	{ name: 'New Room', component: <NewRoom /> }, 
-	{ name: 'Profile', component: <Profile {...getUserProfileProps(SessionStore.user)} /> },
-	{ name: 'Friends', component: <Friends /> }, 
-	{ name: 'Rooms', component: <Rooms /> }, 
-	{ name: 'People', component: <People /> } 
-]
-
 const pushDrawer = title => {
 	drawerTitle = title
 	drawerId = DrawerStore.push()
@@ -60,8 +52,19 @@ const renderDrawerContent = () => {
 let drawerStore
 let drawerTitle = ""
 let drawerId
+let leftPaneComponents
 
 @observer class Home extends Component {
+	componentWillMount() {
+		leftPaneComponents = [ 
+			{ name: 'New Room', component: <NewRoom /> }, 
+			{ name: 'Profile', component: <Profile {...getUserProfileProps(SessionStore.user)} /> },
+			{ name: 'Friends', component: <Friends /> }, 
+			{ name: 'Rooms', component: <Rooms /> }, 
+			{ name: 'People', component: <People /> } 
+		]
+	}
+
 	render () {
 		return (
 			<div class={styles.root}>
