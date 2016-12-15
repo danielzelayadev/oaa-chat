@@ -18,8 +18,10 @@ class SessionStore {
 
 		this.token = tokenstr ? tokenstr : ""
 		this.user = userstr ? JSON.parse(userstr) : ""
-		this.user.friends = []
-		this.user.rooms = []
+		if (typeof this.user === 'object') {
+			this.user.friends = []
+			this.user.rooms = []
+		}
 	}
 
 	@computed get filteredFriends() {
