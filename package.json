@@ -41,6 +41,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "css-loader": "^0.26.1",
     "html-webpack-plugin": "^2.24.1",
+    "inquirer-directory": "^2.0.0",
     "node-sass": "^3.13.0",
     "postcss-loader": "^1.1.1",
     "rimraf": "^2.5.4",
