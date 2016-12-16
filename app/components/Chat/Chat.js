@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
+import ContentEditable from 'react-contenteditable'
 import Mood from 'material-ui/svg-icons/social/mood'
 import Send from 'material-ui/svg-icons/content/send'
 import IconButton from 'material-ui/IconButton'
@@ -19,9 +20,31 @@ const sendBtnStyles = {
 }
 
 @observer class Chat extends Component {
+	constructor (props) {
+		super(props)
+		this.state = {
+			message: ''
+		}
+	}
+	updateMessage (e) {
+		this.setState({ 
+			...this.state, 
+			message: e.target.value
+		})
+	}
+	sendMessage () {
+		const { message } = this.state
+	}
+	onKeyPress (e) {
+		if (!e.shiftKey && e.which === 13) {
+			e.preventDefault()
+			this.sendMessage()
+			this.setState({ ...this.state, message: '' })
+		}
+	}
 	render () {
 		const { className, room } = this.props
-
+		const { message } = this.state
 		return (
 			<div class={`${styles.root} ${className}`}>
 				<div class={styles.messages} style={messagesStyles}>
@@ -35,10 +58,15 @@ const sendBtnStyles = {
 						<div class={styles.inputContainer}>
 							<div style={{ position: 'relative' }}>
 								<div class={styles.inputPlaceholder} 
-								     style={{ visibility: 'visible' }}>
+								     style={{ visibility: message.length ? 'hidden' : 'visible' }}>
 								     Type a message
 								</div>
-								<div class={styles.input} contentEditable="true" spellCheck="true" />
+								<ContentEditable 
+									class={styles.input}
+									html={message} 
+									disabled={false}
+									onChange={this.updateMessage.bind(this)}
+									onKeyPress={this.onKeyPress.bind(this)} />
 							</div>
 						</div>
 						<IconButton class={styles.sendBtn} style={sendBtnStyles}>
