@@ -87,7 +87,9 @@ let closedRooms, openRooms
 	 //          {body}
 	 //        </p>
 		// )
-		return (<p><span style={{color: darkBlack}}>wupa9</span> -- Hello!</p>)
+		return (<p><span style={{color: darkBlack}}>wupa9</span> --
+			Hello, this a very cool and official message from me, wupa9!
+			Please talk to me!</p>)
 	}
 
 	render () {
