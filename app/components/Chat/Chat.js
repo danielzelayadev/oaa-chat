@@ -22,8 +22,17 @@ const sendBtnStyles = {
 @observer class Chat extends Component {
 	constructor (props) {
 		super(props)
+		this.scrollBottom = false
 		this.state = {
+			messages: [],
 			message: ''
+		}
+	}
+	componentDidUpdate() {
+		if (this.scrollBottom) {
+			const { msgs } = this.refs
+			msgs.scrollTop = msgs.scrollHeight
+			this.scrollBottom = false
 		}
 	}
 	updateMessage (e) {
@@ -34,21 +43,43 @@ const sendBtnStyles = {
 	}
 	sendMessage () {
 		const { message } = this.state
+
+		if (!message.length)
+			return
+
+		this.scrollBottom = true
+
+		this.setState({ 
+			...this.state,
+			messages: [ ...this.state.messages, { sender: 'wupa9', body: message } ], 
+			message: '' 
+		})
 	}
 	onKeyPress (e) {
 		if (!e.shiftKey && e.which === 13) {
 			e.preventDefault()
 			this.sendMessage()
-			this.setState({ ...this.state, message: '' })
 		}
 	}
 	render () {
 		const { className, room } = this.props
-		const { message } = this.state
+		const { message, messages } = this.state
 		return (
 			<div class={`${styles.root} ${className}`}>
-				<div class={styles.messages} style={messagesStyles}>
-					
+				<div ref="msgs" class={styles.messages} style={messagesStyles}>
+					{
+						messages.map((msg, i) => (
+							<div key={i} class={`${styles.msg} ${styles.msgContinuation}`}>
+								<div class={styles.message} 
+								     style={{ backgroundColor: '#DCF8C6', 
+							              float: 'right' }}>
+									<div class={styles.bubble}>
+										<div class={styles.messageText}>{msg.body}</div>
+									</div>
+								</div>
+							</div>
+						))
+					}
 				</div>
 				<div class={styles.footer}>
 					<div class={styles.blockCompose}>
@@ -69,7 +100,8 @@ const sendBtnStyles = {
 									onKeyPress={this.onKeyPress.bind(this)} />
 							</div>
 						</div>
-						<IconButton class={styles.sendBtn} style={sendBtnStyles}>
+						<IconButton class={styles.sendBtn} style={sendBtnStyles} 
+						            onClick={this.sendMessage.bind(this)}>
 							<Send color='#999694' />
 						</IconButton>
 					</div>

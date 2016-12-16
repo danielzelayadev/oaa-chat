@@ -3,7 +3,39 @@
 	flex-direction: column;
 }
 
+.msg {
+    position: relative;
+    padding-left: 9%;
+    padding-right: 9%;
+}
+
+.msgContinuation {
+    margin-bottom: 2px;
+}
+
+.messageText {
+    position: relative;
+    font-size: 13.6px;
+    line-height: 19px;
+    word-wrap: break-word;
+    color: #262626;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.bubble {
+    padding: 6px 7px 8px 9px;
+}
+
+.message {
+    position: relative;
+    margin-bottom: 0;
+    border-radius: 7.5px;
+    box-shadow: 0 1px .5px rgba(0,0,0,.13);
+}
+
 .messages {
+    display: flex;
+    flex-direction: column;
 	height: 491px;
 	overflow-y: auto;
 	flex: 1 1 0;
