@@ -1,0 +1,54 @@
+.placeholder {
+	top: 50%;
+    left: 75px;
+    width: calc(100% - 82px);
+    font-size: 13px;
+    line-height: 16px;
+    margin-top: -7px;
+    white-space: nowrap;
+    z-index: 100;
+} 
+
+.searchArea {
+	height: 9%;
+	background-color: #ddd;	
+}
+
+.rooms {
+	height: 91%;
+	overflow-y: auto;
+}
+
+.roomSearch {
+	position: absolute;
+	top: 0;
+    box-sizing: border-box;
+    width: calc(100% - 28px);
+    margin-top: 7px;
+    margin-left: 12px;
+    padding-left: 62px;
+    padding-right: 54px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #f6f6f6;
+    height: 34px;
+    border-radius: 5px;
+    background-clip: padding-box;
+    background-color: #fff;
+    transition: .12s cubic-bezier(.1,.82,.25,1);
+}
+
+.input {
+	padding: 0;
+    font-size: 14px;
+    z-index: 1;
+    text-align: left;
+    user-select: text;
+    line-height: 20px;
+    min-height: 20px;
+    border: none;
+    width: 100%;
+    outline: none;
+    font-weight: 400;
+    margin: 0;
+}
