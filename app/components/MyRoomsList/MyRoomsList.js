@@ -48,7 +48,7 @@ let closedRooms, openRooms
 			closedRooms.splice(index, 1)
 		}
 
-		// Open Chat Pane
+		this.props.onRoomOpen(room)
 
 		this.setState({ ...this.state, searchText: '', visibleRooms: openRooms })
 	}
@@ -80,13 +80,14 @@ let closedRooms, openRooms
 	}
 
 	getSecondaryText (room) {
-		const { sender: { username }, body } = room.messages[room.messages.length - 1]
-		return (
-			<p>
-	          <span style={{color: darkBlack}}>{username}</span> --
-	          {body}
-	        </p>
-		)
+		// const { sender: { username }, body } = room.messages[room.messages.length - 1]
+		// return (
+		// 	<p>
+	 //          <span style={{color: darkBlack}}>{username}</span> --
+	 //          {body}
+	 //        </p>
+		// )
+		return (<p><span style={{color: darkBlack}}>wupa9</span> -- Hello!</p>)
 	}
 
 	render () {
@@ -112,7 +113,7 @@ let closedRooms, openRooms
 							visibleRooms.map((e, key) =>
 								<div key={key}>
 									<ListItem primaryText={e.name}
-									secondaryText={this.getSecondaryText.bind(this, e)}
+									secondaryText={this.getSecondaryText(e)}
 									secondaryTextLines={2}
 									onClick={this.roomClicked.bind(this, e)} 
 									leftAvatar={<Avatar src={e.avatar} />}
