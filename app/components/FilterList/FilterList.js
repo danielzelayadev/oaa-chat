@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 import TextField from 'material-ui/TextField'
 import {List, ListItem} from 'material-ui/List'
+import Divider from 'material-ui/Divider'
 import Avatar from 'material-ui/Avatar'
 import styles from './FilterList.css'
 
@@ -32,10 +33,14 @@ import styles from './FilterList.css'
 				<List style={{ overflowY: 'auto', height: '85%' }}>
 					{
 						filteredItems.map((item, i) => (
-							<ListItem key={i} primaryText={item.primaryText}
-							onClick={this.listItemClicked.bind(this, item.data)}
-							leftAvatar={ item.avatar ? <Avatar src={item.avatar}/> : null }
-							{...listItemProps} />))
+							<div key={i}>
+								<ListItem primaryText={item.primaryText}
+								onClick={this.listItemClicked.bind(this, item.data)}
+								leftAvatar={ item.avatar ? <Avatar src={item.avatar}/> : null }
+								{...listItemProps} />
+								<Divider inset={true} />
+							</div>
+						))
 					}
 				</List>
 			</div>
