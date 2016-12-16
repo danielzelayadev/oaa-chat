@@ -1,1 +1,99 @@
- 
+.root {
+	display: flex;
+	flex-direction: column;
+}
+
+.messages {
+	height: 491px;
+	overflow-y: auto;
+	flex: 1 1 0;
+}
+
+.footer {
+	padding: 0;
+    background-color: #f5f1ee;
+    box-sizing: border-box;
+    border-left: 1px solid rgba(0,0,0,.08);
+    min-height: 62px;
+    width: 100%;
+}
+
+.blockCompose {
+	display: flex;
+	align-items: flex-end;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    padding: 10px 19px;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #f5f1ee;
+    position: relative;
+    z-index: 2;
+}
+
+.inputContainer {
+	border-radius: 5px;
+    background-clip: padding-box;
+    align-self: center;
+    width: 80%;
+    background-color: #fff;
+    min-width: 0;
+    border-color: #fff;
+    border-width: 1px;
+    flex: 1 1 auto;
+    border-style: solid;
+    box-sizing: border-box;
+    padding-right: 16px;
+    user-select: text;
+    line-height: 20px;
+    font-size: 15px;
+    min-height: 20px;
+    border: none;
+    padding: 10px 12px;
+    outline: none;
+    font-weight: 400;
+}
+
+.input {
+	word-wrap: break-word;
+    white-space: pre-wrap;
+    padding: 0 2px 0 0;
+    min-height: 20px;
+    max-height: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: rgba(255,255,255,0);
+    border-left: .1px solid transparent;
+    position: relative;
+    z-index: 1;
+    user-select: text;
+    line-height: 20px;
+    font-size: 15px;
+    border: none;
+    width: 100%;
+    outline: none;
+    font-weight: 400;
+}
+
+.inputPlaceholder {
+	top: 0;
+	margin-left: 2px;
+	user-select: none;
+    position: absolute;
+    left: 0;
+    color: #999;
+    pointer-events: none;
+    transition: opacity .08s linear;
+    font-size: 15px;
+    line-height: 20px;
+    z-index: 0;
+}
+
+.emojiBtn {
+    flex: 0 0 auto;
+}
+
+.sendBtn {
+	flex: 0 0 auto;
+}
