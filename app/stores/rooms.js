@@ -3,6 +3,7 @@ import axios from 'axios'
 import { API } from '../constants'
 
 class RoomsStore {
+	@observable openRoom = undefined
 	@observable rooms
 
 	constructor () {
