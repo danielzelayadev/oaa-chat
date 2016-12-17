@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import { SessionStore, DrawerStore, RoomsStore } from '../../stores'
+import { SessionStore, DrawerStore, UsersStore, RoomsStore } from '../../stores'
 import { getUserProfileProps, drawerIsOpen } from '../../utils'
 import { LANDING, Profile, Drawer, Friends, People, 
 	     Rooms, MyRoomsList, DrawerHeader, NewRoom,
@@ -35,38 +35,56 @@ const pushDrawer = title => {
 	drawerId = DrawerStore.push()
 }
 
+const leftPaneComponents = [ 
+	{ name: 'New Room', component:  props => <NewRoom {...props} /> }, 
+	{ name: 'Profile',  component:  props => <Profile {...props} /> },
+	{ name: 'Friends',  component:  props => <Friends {...props} /> }, 
+	{ name: 'Rooms',    component:  props => <Rooms   {...props} /> }, 
+	{ name: 'People',   component:  props => <People  {...props} /> } 
+]
+
 const Options = observer(props => (
-	 <IconMenu {...props} menuStyle={{ width: 140 }} 
-	 	iconButtonElement={<IconButton iconStyle={{ color: 'white' }}><MoreVertIcon /></IconButton>}
+	 <IconMenu {...props} 
+	 	menuStyle={{ width: 140 }} 
+	 	iconButtonElement={
+	 		<IconButton iconStyle={{ color: 'white' }}>
+	 			<MoreVertIcon />
+	 		</IconButton>
+	 	}
     	targetOrigin={{horizontal: 'right', vertical: 'top'}}
     	anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
     	{ leftPaneComponents.map((c, i) => (
-    		<MenuItem key={i} primaryText={c.name} onClick={e => pushDrawer(c.name) } />
+    		<MenuItem key={i} primaryText={c.name} 
+    		          onClick={ e => pushDrawer(c.name) } />
     	)) }
-	    <MenuItem primaryText="Log out" onClick={logout} />
+	    <MenuItem primaryText="Log Out" onClick={logout} />
  	 </IconMenu>
 ))
 
 const renderDrawerContent = () => {
 	const res = leftPaneComponents.filter(e => e.name === drawerTitle)[0]
-	return res ? res.component : null
+	let props = {}
+
+	if (res.name.includes('Profile'))
+		props = getUserProfileProps(SessionStore.user)
+
+	return res ? res.component(props) : null
 }
 
 let drawerStore
 let drawerTitle = ""
 let drawerId
-let leftPaneComponents
+
+async function fetchAppData () {
+	await SessionStore.fetch()
+	await RoomsStore.fetch()
+	await UsersStore.fetch()
+}
 
 @observer class Home extends Component {
-
-	componentWillMount() {
-		leftPaneComponents = [ 
-			{ name: 'New Room', component: <NewRoom /> }, 
-			{ name: 'Profile', component: <Profile {...getUserProfileProps(SessionStore.user)} /> },
-			{ name: 'Friends', component: <Friends /> }, 
-			{ name: 'Rooms', component: <Rooms /> }, 
-			{ name: 'People', component: <People /> } 
-		]
+	constructor (props) {
+		super(props)
+		fetchAppData()
 	}
 
 	componentDidMount () {

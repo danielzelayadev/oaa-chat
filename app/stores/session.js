@@ -19,10 +19,12 @@ class SessionStore {
 
 		this.token = tokenstr ? tokenstr : ""
 		this.user = userstr ? JSON.parse(userstr) : ""
-		if (typeof this.user === 'object') {
-			this.user.friends = []
-			this.user.rooms = []
-		}
+	}
+
+	@action async fetch () {
+		const response = await axios.get(`${API}/me`, auth(this.token))
+		this.user = response.data
+		window.localStorage['user'] = JSON.stringify(this.user)
 	}
 
 	@computed get filteredFriends() {
@@ -35,7 +37,7 @@ class SessionStore {
 	}
 
 	@computed get loggedIn () {
-		return this.user !== ""
+		return this.token !== ""
 	}
 
 	@action async login (creds) {
@@ -46,13 +48,9 @@ class SessionStore {
 		this.loginFailed = false
 
 		try {
-			let response = await axios.post(`${API}/login`, creds)
+			const response = await axios.post(`${API}/login`, creds)
 			const { hash } = response.data
 			this.token = window.localStorage['token'] = hash
-
-			response = await axios.get(`${API}/me`, auth(hash))
-			this.user = response.data
-			window.localStorage['user'] = JSON.stringify(this.user)
 		} catch (e) {
 			const response = e.response
 
