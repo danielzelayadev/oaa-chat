@@ -8,6 +8,8 @@ import IconButton from 'material-ui/IconButton'
 import chatPattern from '../../res/chat-pattern.png'
 import styles from './Chat.css'
 
+const CMDC = '~', ADD = 'add', KICK = 'kick', CLEAR = 'clear'
+
 const messagesStyles = {
 	backgroundImage: `url(${chatPattern})`
 }
@@ -41,16 +43,37 @@ const sendBtnStyles = {
 			message: e.target.value
 		})
 	}
+	executeCommand (message) {
+		if (message[0] !== CMDC)
+			return false
+
+		const tokens = message.slice(1, message.length).split(" ")
+		const cmd = tokens[0]
+
+		if (cmd === ADD) {
+			const user = tokens[1]
+			console.log("Going to ADD " + user + ".")
+		} else if (cmd === KICK) {
+			const user = tokens[1]
+			console.log("Going to KICK " + user + ".")
+		} else if (cmd === CLEAR)
+			this.props.room.messages = []
+		else
+			return false
+
+		return true
+	}
 	sendMessage () {
 		const { message } = this.state
 
 		if (!message.length)
 			return
 
-		this.scrollBottom = true
-
-		const { room } = this.props
-		room.messages.push({ sender: 'wupa9', body: message })
+		if (!this.executeCommand(message)) {
+			this.scrollBottom = true
+			const { room } = this.props
+			room.messages.push({ sender: 'wupa9', body: message })
+		}
 
 		this.setState({ 
 			...this.state,
