@@ -7,6 +7,7 @@ import { LANDING, Profile, Drawer, Friends, People,
 	     Chat } from '../../components'
 import { observer } from 'mobx-react'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
+import AttachFile from 'material-ui/svg-icons/editor/attach-file'
 import AppBar from 'material-ui/AppBar'
 import Avatar from 'material-ui/Avatar'
 import IconMenu from 'material-ui/IconMenu'
@@ -57,6 +58,7 @@ let drawerId
 let leftPaneComponents
 
 @observer class Home extends Component {
+
 	componentWillMount() {
 		leftPaneComponents = [ 
 			{ name: 'New Room', component: <NewRoom /> }, 
@@ -65,6 +67,32 @@ let leftPaneComponents
 			{ name: 'Rooms', component: <Rooms /> }, 
 			{ name: 'People', component: <People /> } 
 		]
+	}
+
+	componentDidMount () {
+		const el = this.refs.attachFile
+		if (el)
+			el.onchange = () => {
+				const file = el.files[0]
+				if (file) {
+					const reader = new FileReader()
+				    reader.onload = e => 
+				    	RoomsStore.openRoom.messages.push({
+				    		sender: SessionStore.user.username,
+				    		body: '',
+				    		attachment: {
+				    			name: file.name,
+				    			type: file.type,
+				    			data: reader.result
+				    		}
+				    	})
+				    reader.readAsDataURL(file)
+				}
+			}
+	}
+
+	sendFile () {
+		this.refs.attachFile.click()
 	}
 
 	render () {
@@ -98,8 +126,17 @@ let leftPaneComponents
 						        iconElementLeft={
 						        	<Avatar 
 						        	src={openRoom.avatar} style={avatarStyles} />
+						        }
+						        iconElementRight={
+						        	<IconButton iconStyle={{ color: 'white' }} 
+						        	            tooltip="Send a File"
+						        	            onClick={this.sendFile.bind(this)}>
+						        		<AttachFile />
+						        	</IconButton>
 						        }/>
 							<Chat class={styles.chat} room={openRoom} />
+							<input ref='attachFile' type="file" 
+						           style={{visibility: "hidden"}} />
 						</div> : null
 					}
 				</div>
