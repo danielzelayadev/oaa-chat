@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { emojiConfig } from '../../constants'
 import ReactEmoji from 'react-emoji'
 import ContentEditable from 'react-contenteditable'
+import Download from 'material-ui/svg-icons/file/file-download'
 import Mood from 'material-ui/svg-icons/social/mood'
 import Send from 'material-ui/svg-icons/content/send'
 import IconButton from 'material-ui/IconButton'
@@ -26,7 +27,6 @@ const sendBtnStyles = {
 		super(props)
 		this.scrollBottom = false
 		this.state = {
-			messages: [],
 			message: ''
 		}
 	}
@@ -51,9 +51,11 @@ const sendBtnStyles = {
 
 		this.scrollBottom = true
 
+		const { room } = this.props
+		room.messages.push({ sender: 'wupa9', body: message })
+
 		this.setState({ 
 			...this.state,
-			messages: [ ...this.state.messages, { sender: 'wupa9', body: message } ], 
 			message: '' 
 		})
 	}
@@ -63,9 +65,12 @@ const sendBtnStyles = {
 			this.sendMessage()
 		}
 	}
+	downloadFile ({ data, name, type }) {
+		download(data, name, type)
+	}
 	render () {
-		const { className, room } = this.props
-		const { message, messages } = this.state
+		const { className, room: { messages } } = this.props
+		const { message } = this.state
 		return (
 			<div class={`${styles.root} ${className}`}>
 				<div ref="msgs" class={styles.messages} style={messagesStyles}>
@@ -75,10 +80,27 @@ const sendBtnStyles = {
 								<div class={styles.message} 
 								     style={{ backgroundColor: '#DCF8C6', 
 							              float: 'right' }}>
-									<div class={styles.bubble}>
-										<div class={styles.messageText}>
-											{ReactEmoji.emojify(msg.body, emojiConfig)}
-										</div>
+									<div class={`${styles.bubble} 
+									             ${ msg.attachment ? styles.bubbleDoc : '' }`}>
+										{
+											msg.attachment ?
+											<div class={styles.documentContainer} 
+											     title={`Download "${msg.attachment.name}"`}>
+												<div class={styles.documentBody}>
+													<div class={styles.documentText}>
+														<span>{msg.attachment.name}</span>
+													</div>
+													<IconButton onClick={
+														this.downloadFile.bind(this, msg.attachment)}>
+														<Download/>
+													</IconButton>
+												</div>
+											</div>
+											:
+											<div class={styles.messageText}>
+												{ReactEmoji.emojify(msg.body, emojiConfig)} 
+											</div>
+										}
 									</div>
 								</div>
 							</div>
