@@ -1,5 +1,6 @@
 import { observable, computed, action } from 'mobx'
 import axios from 'axios'
+import { auth } from '../utils'
 import { API } from '../constants'
 
 class SessionStore {
@@ -45,11 +46,13 @@ class SessionStore {
 		this.loginFailed = false
 
 		try {
-			const response = await axios.post(`${API}/login`, creds)
-			const { token, ...user } = response.data
-			this.token = window.localStorage['token'] = token
-			this.user = user
-			window.localStorage['user'] = JSON.stringify(user)
+			let response = await axios.post(`${API}/login`, creds)
+			const { hash } = response.data
+			this.token = window.localStorage['token'] = hash
+
+			response = await axios.get(`${API}/me`, auth(hash))
+			this.user = response.data
+			window.localStorage['user'] = JSON.stringify(this.user)
 		} catch (e) {
 			const response = e.response
 
@@ -57,7 +60,7 @@ class SessionStore {
 				this.error = "Something went wrong."
 				console.error(e.message)
 			} else
-				this.error = response.data
+				this.error = response.data.message
 
 			this.loginFailed = true
 		} finally {
