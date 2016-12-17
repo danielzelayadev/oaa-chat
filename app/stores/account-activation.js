@@ -23,7 +23,7 @@ class AccountActivationStore {
 				this.error = "Something went wrong."
 				console.error(e.message)
 			} else
-				this.error = response.data
+				this.error = response.data.message
 
 			this.activateFailed = true
 		} finally {
