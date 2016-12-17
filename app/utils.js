@@ -21,3 +21,7 @@ export const getRoomProfileProps = room => ({
 })
 
 export const drawerIsOpen = (id, drawers) => id > 0 && id <= drawers
+
+export const auth = token => ({
+  headers: { 'Authorization': `Token ${token}` }
+})
