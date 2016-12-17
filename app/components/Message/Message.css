@@ -1,0 +1,111 @@
+.msg {
+    position: relative;
+    padding-left: 9%;
+    padding-right: 9%;
+}
+
+.msgContinuation {
+    margin-bottom: 2px;
+}
+
+.messageText {
+    position: relative;
+    font-size: 13.6px;
+    line-height: 19px;
+    word-wrap: break-word;
+    color: #262626;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.bubble {
+    padding: 6px 7px 8px 9px;
+}
+
+.bubbleImage {
+    z-index: 1;
+    position: relative;
+    padding: 3px;
+    max-width: 336px;
+}
+
+.imageThumb {
+    width: 330px;
+    height: 186px;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: relative;
+}
+
+.imageThumb > img {
+    height: 100%;
+    -webkit-box-flex: 0;
+    flex: none;
+    -webkit-transition: -webkit-filter .16s linear;
+}
+
+.bubbleDoc {
+    width: 260px;
+}
+
+.documentContainer {
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    width: 270px;
+    margin: -3px 0 14px -6px;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid rgba(75,89,97,.1);
+}
+
+.documentBody {
+    background-color: #d1ecbc;
+    font-family: 'Open Sans',sans-serif;
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    padding: 13px 19px;
+    height: 34px;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.documentText {
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    margin: 0 10px;
+    overflow: hidden;
+    top: -2px;
+    position: relative;
+}
+
+.documentText > span {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+}
+
+.message {
+    position: relative;
+    margin-bottom: 0;
+    border-radius: 7.5px;
+    box-shadow: 0 1px .5px rgba(0,0,0,.13);
+}
