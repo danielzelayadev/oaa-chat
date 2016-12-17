@@ -26,6 +26,60 @@
     padding: 6px 7px 8px 9px;
 }
 
+.bubbleDoc {
+    width: 260px;
+}
+
+.documentContainer {
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    width: 270px;
+    margin: -3px 0 14px -6px;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid rgba(75,89,97,.1);
+}
+
+.documentBody {
+    background-color: #d1ecbc;
+    font-family: 'Open Sans',sans-serif;
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    padding: 13px 19px;
+    height: 34px;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.documentText {
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    margin: 0 10px;
+    overflow: hidden;
+    top: -2px;
+    position: relative;
+}
+
+.documentText > span {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+}
+
 .message {
     position: relative;
     margin-bottom: 0;
