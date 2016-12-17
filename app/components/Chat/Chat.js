@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
+import { emojiConfig } from '../../constants'
+import ReactEmoji from 'react-emoji'
 import ContentEditable from 'react-contenteditable'
 import Mood from 'material-ui/svg-icons/social/mood'
 import Send from 'material-ui/svg-icons/content/send'
@@ -74,7 +76,9 @@ const sendBtnStyles = {
 								     style={{ backgroundColor: '#DCF8C6', 
 							              float: 'right' }}>
 									<div class={styles.bubble}>
-										<div class={styles.messageText}>{msg.body}</div>
+										<div class={styles.messageText}>
+											{ReactEmoji.emojify(msg.body, emojiConfig)}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -83,9 +87,10 @@ const sendBtnStyles = {
 				</div>
 				<div class={styles.footer}>
 					<div class={styles.blockCompose}>
-						<IconButton class={styles.emojiBtn} style={emojiBtnStyles}>
-							<Mood color='#999694' />
-						</IconButton>
+						<IconButton class={styles.emojiBtn} style={emojiBtnStyles} 
+						            href='http://emoji.codes/' target='_blank'>
+								<Mood color='#999694' />
+							</IconButton>
 						<div class={styles.inputContainer}>
 							<div style={{ position: 'relative' }}>
 								<div class={styles.inputPlaceholder} 
