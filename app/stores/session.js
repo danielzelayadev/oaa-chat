@@ -136,7 +136,8 @@ class SessionStore {
 		this.user.rooms = this.user.rooms.filter(e => e.title !== room.title)
 		this.closedRooms = this.closedRooms.filter(e => e.title !== room.title)
 		this.openRooms = this.openRooms.filter(e => e.title !== room.title)
-		RoomsStore.openRoom = RoomsStore.openRoom.title === room.title ? null : RoomsStore.openRoom
+		RoomsStore.openRoom = RoomsStore.openRoom && RoomsStore.openRoom.title === room.title ? 
+		                      null : RoomsStore.openRoom;
 		room.members.splice(room.members.indexOf(this.user.username), 1)
 
 		try {
