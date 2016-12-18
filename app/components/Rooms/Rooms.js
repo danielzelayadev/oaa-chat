@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SessionStore, RoomsStore, DrawerStore } from '../../stores'
+import { SessionStore, UsersStore, RoomsStore, DrawerStore } from '../../stores'
 import { Profile, Drawer, DrawerHeader } from '..'
 import { getRoomProfileProps, drawerIsOpen } from '../../utils'
 import { FilterList } from '../../components'
@@ -19,7 +19,8 @@ const listItemProps = {
 const onListItemClick = room => {
 	const isInRoom = SessionStore.isInRoom(room)
 	drawerTitle = room.title
-	profileProps = getRoomProfileProps(room)
+	profileProps = getRoomProfileProps(room, 
+		           UsersStore.users.filter(u => room.members.indexOf(u.username) >= 0))
 	profileProps.actions = [
 		{ label: isInRoom ? 'Exit' : 'Join', 
 		  backgroundColor: isInRoom ? '#B71C1C' : '#fff', 

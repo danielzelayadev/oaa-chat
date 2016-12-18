@@ -13,10 +13,13 @@ export const getUserProfileProps = user => ({
 	]
 })
 
-export const getRoomProfileProps = room => ({
+export const getRoomProfileProps = (room, members) => ({
 	avatar: room.avatar,
 	details: [
 		{ name: "Admin", value: room.admin }
+	],
+	lists: [
+		members.map(m => ({ primaryText: m.username, avatar: m.avatar }))
 	]
 })
 
