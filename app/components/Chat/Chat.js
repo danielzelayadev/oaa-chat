@@ -71,8 +71,8 @@ const sendBtnStyles = {
 
 		if (!this.executeCommand(message)) {
 			this.scrollBottom = true
-			const { room } = this.props
-			room.messages.push({ sender: 'wupa9', body: message })
+			const { sender, room } = this.props
+			room.messages.push({ sender, body: message })
 		}
 
 		this.setState({ 

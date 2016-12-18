@@ -79,18 +79,35 @@ let closedRooms, openRooms
 	}
 
 	getSecondaryText (room) {
-		// const { sender: { username }, body } = room.messages[room.messages.length - 1]
-		// return (
-		// 	<p>
-	 //          <span style={{color: darkBlack}}>{username}</span> --
-	 //          {body}
-	 //        </p>
-		// )
-		return (<p><span style={{color: darkBlack}}>wupa9</span> --
-			Hello, this a very cool and official message from me, wupa9!
-			Please talk to me!</p>)
+		if (!room.messages.length)
+			return (
+				<p>
+		          Open room to send messages!
+		        </p>
+			)
+		else {
+			const message = room.messages[room.messages.length - 1]
+			if (message.attachment) {
+				const { sender, attachment } = message
+				return (
+					<p>
+			          { (sender === SessionStore.user.username ? 'You' : sender) + ' ' } 
+			          sent a{ attachment.type.includes('image/') ? ' photo' : 'n attachment' }!
+			        </p>
+				)
+			} else {
+				const { sender, body } = message
+				return (
+					<p>
+			          <span style={{color: darkBlack}}>
+			          	{ sender === SessionStore.user.username ? 'You' : sender }
+			          </span> --
+			          { ' ' + body }
+			        </p>
+				)
+			}
+		}
 	}
-
 	render () {
 		const { className } = this.props
 		const { searchText, visibleRooms } = this.state
@@ -121,7 +138,6 @@ let closedRooms, openRooms
 									rightIconButton={
 										 <IconMenu iconButtonElement={iconButtonElement}>
 										    <MenuItem onClick={this.closeRoom.bind(this, e)}>Archive Room</MenuItem>
-										    <MenuItem>Exit Room</MenuItem>
 										    <MenuItem>Delete Room</MenuItem>
 										  </IconMenu>
 									} />

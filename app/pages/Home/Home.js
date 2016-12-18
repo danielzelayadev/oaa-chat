@@ -152,7 +152,9 @@ let drawerId
 								        		<AttachFile />
 								        	</IconButton>
 								        }/>
-									<Chat class={styles.chat} room={openRoom} />
+									<Chat class={styles.chat}
+									      sender={SessionStore.user.username} 
+									      room={openRoom} />
 									<input ref='attachFile' type="file" 
 								           style={{visibility: "hidden"}} />
 								</div> : null
