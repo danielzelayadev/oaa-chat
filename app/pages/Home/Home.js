@@ -82,14 +82,14 @@ let drawerId
 		super(props)
 		AppStore.fetch()
 	}
-	componentDidMount () {
+	componentDidUpdate () {
 		const el = this.refs.attachFile
 		if (el)
 			el.onchange = () => {
 				const file = el.files[0]
 				if (file) {
 					const reader = new FileReader()
-				    reader.onload = e => 
+				    reader.onload = e =>
 				    	RoomsStore.openRoom.messages.push({
 				    		sender: SessionStore.user.username,
 				    		body: '',
@@ -160,7 +160,10 @@ let drawerId
 						</div>
 					</div>
 					:
-					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+					<div style={{ display: 'flex', 
+					              justifyContent: 'center', 
+					              alignItems: 'center',
+					              width: '100%', height: '100%' }}>
 						<Halogen.ClipLoader color='#5e8f9b' />
 					</div>
 				}
