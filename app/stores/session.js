@@ -118,6 +118,8 @@ class SessionStore {
 		try {
 			await axios.post(`${API}/rooms/add-users`, 
 				{ title: room.title, members: [ this.user.username ] }, auth(this.token))
+
+			room.members.push(this.user.username)
 		} catch (e) {
 			const response = e.response
 
@@ -136,6 +138,8 @@ class SessionStore {
 		try {
 			await axios.post(`${API}/rooms/remove-users`, 
 				{ title: room.title, members: [ this.user.username ] }, auth(this.token))
+
+			room.members.splice(room.members.indexOf(this.user.username), 1)
 		} catch (e) {
 			const response = e.response
 
@@ -153,8 +157,7 @@ class SessionStore {
 	}
 
 	isInRoom (room) {
-		return room.admin === this.user.username ||
-	           room.members.filter(e => e.username === this.user.username).length > 0
+		return room.members.filter(e => e === this.user.username).length > 0
 	}
 
 }

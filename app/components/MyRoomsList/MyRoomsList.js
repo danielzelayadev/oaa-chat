@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import { RoomsStore } from '../../stores'
+import { SessionStore } from '../../stores'
 import Divider from 'material-ui/Divider'
 import {List, ListItem} from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
@@ -25,12 +25,6 @@ const iconButtonElement = (
 let closedRooms, openRooms
 
 @observer class MyRoomsList extends Component {
-
-	componentWillMount () {
-		closedRooms = [ ...RoomsStore.rooms ]
-		openRooms = []
-	}
-
 	constructor (props) {
 		super(props)
 		this.state = {
@@ -95,6 +89,8 @@ let closedRooms, openRooms
 	render () {
 		const { className } = this.props
 		const { searchText, visibleRooms } = this.state
+		closedRooms = [ ...SessionStore.user.rooms ]
+		openRooms = []
 		return (
 			<div class={`${className}`} >
 				<div class={styles.searchArea}>
