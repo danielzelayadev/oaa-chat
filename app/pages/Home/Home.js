@@ -90,15 +90,18 @@ let drawerId
 				if (file) {
 					const reader = new FileReader()
 				    reader.onload = e =>
-				    	RoomsStore.openRoom.messages.push({
-				    		sender: SessionStore.user.username,
-				    		body: '',
-				    		attachment: {
-				    			name: file.name,
-				    			type: file.type,
-				    			data: reader.result
-				    		}
-				    	})
+				    	AppStore.connection.send(JSON.stringify({
+				    		room: RoomsStore.openRoom.title,
+				    		message: {
+					    		sender: SessionStore.user.username,
+					    		body: '',
+					    		attachment: {
+					    			name: file.name,
+					    			type: file.type,
+					    			data: reader.result
+					    		}
+					    	}
+				    	}))
 				    reader.readAsDataURL(file)
 				}
 			}
@@ -153,6 +156,7 @@ let drawerId
 								        	</IconButton>
 								        }/>
 									<Chat class={styles.chat}
+									      connection={AppStore.connection}
 									      sender={SessionStore.user.username} 
 									      room={openRoom} />
 									<input ref='attachFile' type="file" 

@@ -25,6 +25,7 @@ const sendBtnStyles = {
 @observer class Chat extends Component {
 	constructor (props) {
 		super(props)
+		props.connection.onmessage = this.onMessage.bind(this)
 		this.scrollBottom = false
 		this.state = {
 			message: ''
@@ -63,6 +64,16 @@ const sendBtnStyles = {
 
 		return true
 	}
+	onMessage (evt) {
+		const { room } = this.props
+		const data = JSON.parse(evt.data)
+
+		if (data.room !== room.title)
+			return
+
+		this.scrollBottom = true
+		room.messages.push(data.message)
+	}
 	sendMessage () {
 		const { message } = this.state
 
@@ -70,9 +81,11 @@ const sendBtnStyles = {
 			return
 
 		if (!this.executeCommand(message)) {
-			this.scrollBottom = true
-			const { sender, room } = this.props
-			room.messages.push({ sender, body: message })
+			const { connection, room, sender } = this.props
+			connection.send(JSON.stringify({	
+				room: room.title,
+				message: { sender, body: message, attachment: null }
+			}))
 		}
 
 		this.setState({ 
