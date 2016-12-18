@@ -158,7 +158,9 @@ let drawerId
 									<Chat class={styles.chat}
 									      connection={AppStore.connection}
 									      sender={SessionStore.user.username} 
-									      room={openRoom} />
+									      room={openRoom}
+									      onAdd={RoomsStore.addMembers}
+									      onKick={RoomsStore.removeMembers} />
 									<input ref='attachFile' type="file" 
 								           style={{visibility: "hidden"}} />
 								</div> : null

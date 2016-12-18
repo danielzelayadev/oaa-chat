@@ -50,15 +50,18 @@ const sendBtnStyles = {
 
 		const tokens = message.slice(1, message.length).split(" ")
 		const cmd = tokens[0]
+		const { sender, room } = this.props
 
 		if (cmd === ADD) {
 			const user = tokens[1]
-			console.log("Going to ADD " + user + ".")
+			if (sender === room.admin && sender !== user)
+				this.props.onAdd(room, [user])
 		} else if (cmd === KICK) {
 			const user = tokens[1]
-			console.log("Going to KICK " + user + ".")
+			if (sender === room.admin && sender !== user)
+				this.props.onKick(room, [user])
 		} else if (cmd === CLEAR)
-			this.props.room.messages = []
+			room.messages = [] // Tengo que esperar al PUT rooms
 		else
 			return false
 

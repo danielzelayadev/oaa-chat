@@ -16,6 +16,40 @@ class RoomsStore {
 			console.error(e)
 		}
 	}
+
+	@action async addMembers (room, members) {
+		try {
+			const response = await axios.post(`${API}/rooms/add-users`, 
+							{ title: room.title, members: members }, auth(SessionStore.token))
+			room = response.data
+		} catch (e) {
+			const response = e.response
+
+			if (!response)
+				console.error(e.message)
+			else
+				console.error(response.data.message)
+
+			this.error = "The change you made has not been saved. Try reloading."
+		}
+	}
+
+	@action async removeMembers (room, members) {
+		try {
+			const response = await axios.post(`${API}/rooms/remove-users`, 
+							{ title: room.title, members: members }, auth(SessionStore.token))
+			room = response.data
+		} catch (e) {
+			const response = e.response
+
+			if (!response)
+				console.error(e.message)
+			else
+				console.error(response.data.message)
+
+			this.error = "The change you made has not been saved. Try reloading."
+		}
+	}
 }
 
 export default new RoomsStore
