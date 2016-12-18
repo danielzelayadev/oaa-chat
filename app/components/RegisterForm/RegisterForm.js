@@ -53,7 +53,7 @@ let form
 						<Select field={form.$('gender')} options={genderItems} />
 						<DatePicker field={form.$('birthday')} maxDate={new Date()} />
 						<RaisedButton style={{ marginTop: '15px' }} type="submit" 
-						              label="Activate" fullWidth={true} />
+						              label="Register" fullWidth={true} />
 						<Toastr title='Registration Error' type='error' message={error} 
 						        show={ form.isDirty && registerFailed } />
 						<Toastr title='Success' type='success'
