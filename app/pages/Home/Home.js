@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import Halogen from 'halogen'
 import { browserHistory } from 'react-router'
-import { SessionStore, DrawerStore, UsersStore, RoomsStore } from '../../stores'
+import { AppStore, SessionStore, DrawerStore, RoomsStore } from '../../stores'
 import { getUserProfileProps, drawerIsOpen } from '../../utils'
 import { LANDING, Profile, Drawer, Friends, People, 
 	     Rooms, MyRoomsList, DrawerHeader, NewRoom,
@@ -75,18 +76,11 @@ let drawerStore
 let drawerTitle = ""
 let drawerId
 
-async function fetchAppData () {
-	await SessionStore.fetch()
-	await RoomsStore.fetch()
-	await UsersStore.fetch()
-}
-
 @observer class Home extends Component {
-	constructor (props) {
+	constructor(props) {
 		super(props)
-		fetchAppData()
+		AppStore.fetch()
 	}
-
 	componentDidMount () {
 		const el = this.refs.attachFile
 		if (el)
@@ -115,50 +109,60 @@ async function fetchAppData () {
 
 	render () {
 		const { openRoom } = RoomsStore
+		const { loading } = AppStore
 		return (
-			<div class={styles.root}>
-				<div class={styles.leftPane}>
-					<AppBar style={appBarStyles}	
-					        iconElementLeft={<Avatar src={SessionStore.user.avatar} style={avatarStyles} 
-					        onClick={e => pushDrawer("Profile")} />}
-					        iconElementRight={<Options/>} />
-					<MyRoomsList class={styles.roomList} onRoomOpen={room => RoomsStore.openRoom = room} />
-					{
-						drawerIsOpen(drawerId, DrawerStore.drawers) ?
-						<Drawer closing={DrawerStore.drawerClosing == drawerId}>
-							<DrawerHeader title={drawerTitle} close={() => DrawerStore.pop()} />
-							<div style={{ height: '82.439%' }}>
-								{ renderDrawerContent() }
-							</div>
-						</Drawer> : null
-					}
-				</div>
-				<div class={styles.rightPane}
-				     style={{borderLeft: openRoom ? 'none' : '1px solid #77DCFE',
-				             width:      openRoom ? '70%'  : '69%' }}>
-					{
-						openRoom ?
-						<div class={styles.rightPaneContent}>
-							<AppBar style={appBarStyles} title={openRoom.name}	
-							    titleStyle={{ fontSize: 19, marginLeft: 5 }}
-						        iconElementLeft={
-						        	<Avatar 
-						        	src={openRoom.avatar} style={avatarStyles} />
-						        }
-						        iconElementRight={
-						        	<IconButton iconStyle={{ color: 'white' }} 
-						        	            tooltip="Send a File"
-						        	            onClick={this.sendFile.bind(this)}>
-						        		<AttachFile />
-						        	</IconButton>
-						        }/>
-							<Chat class={styles.chat} room={openRoom} />
-							<input ref='attachFile' type="file" 
-						           style={{visibility: "hidden"}} />
-						</div> : null
-					}
-				</div>
-			</div>
+			<span>
+				{
+					!loading ?
+					<div class={styles.root}>
+						<div class={styles.leftPane}>
+							<AppBar style={appBarStyles}	
+							        iconElementLeft={<Avatar src={SessionStore.user.avatar} style={avatarStyles} 
+							        onClick={e => pushDrawer("Profile")} />}
+							        iconElementRight={<Options/>} />
+							<MyRoomsList class={styles.roomList} onRoomOpen={room => RoomsStore.openRoom = room} />
+							{
+								drawerIsOpen(drawerId, DrawerStore.drawers) ?
+								<Drawer closing={DrawerStore.drawerClosing == drawerId}>
+									<DrawerHeader title={drawerTitle} close={() => DrawerStore.pop()} />
+									<div style={{ height: '82.439%' }}>
+										{ renderDrawerContent() }
+									</div>
+								</Drawer> : null
+							}
+						</div>
+						<div class={styles.rightPane}
+						     style={{borderLeft: openRoom ? 'none' : '1px solid #77DCFE',
+						             width:      openRoom ? '70%'  : '69%' }}>
+							{
+								openRoom ?
+								<div class={styles.rightPaneContent}>
+									<AppBar style={appBarStyles} title={openRoom.name}	
+									    titleStyle={{ fontSize: 19, marginLeft: 5 }}
+								        iconElementLeft={
+								        	<Avatar 
+								        	src={openRoom.avatar} style={avatarStyles} />
+								        }
+								        iconElementRight={
+								        	<IconButton iconStyle={{ color: 'white' }} 
+								        	            tooltip="Send a File"
+								        	            onClick={this.sendFile.bind(this)}>
+								        		<AttachFile />
+								        	</IconButton>
+								        }/>
+									<Chat class={styles.chat} room={openRoom} />
+									<input ref='attachFile' type="file" 
+								           style={{visibility: "hidden"}} />
+								</div> : null
+							}
+						</div>
+					</div>
+					:
+					<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+						<Halogen.ClipLoader color='#5e8f9b' />
+					</div>
+				}
+			</span>
 		)
 	}
 }
