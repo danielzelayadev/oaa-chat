@@ -11,7 +11,7 @@ import styles from './Message.css'
 		download(data, name, type)
 	}
 	render () {
-		const { body, attachment, sent } = this.props
+		const { sender, body, attachment, sent } = this.props
 		return (
 			<div class={`${styles.msg} ${styles.msgContinuation}`}>
 				<div class={styles.message} 
@@ -24,12 +24,14 @@ import styles from './Message.css'
 							{
 								attachment.type.includes('image/') ?
 								<div class={styles.bubbleImage}>
+									{ sent ? null : <h3 class={styles.messageAuthor}>{sender}</h3> }
 									<div class={styles.imageThumb}>
 										<img src={attachment.data} />
 									</div>
 								</div>
 								:
 								<div class={`${styles.bubble} ${styles.bubbleDoc}`}>
+									{ sent ? null : <h3 class={styles.messageAuthor}>{sender}</h3> }
 									<div class={styles.documentContainer} 
 									     title={`Download "${attachment.name}"`}>
 										<div class={styles.documentBody}>
@@ -44,6 +46,7 @@ import styles from './Message.css'
 						</div>
 						:
 						<div class={styles.bubble}>
+							{ sent ? null : <h3 class={styles.messageAuthor}>{sender}</h3> }
 							<div class={styles.messageText}>
 								{ReactEmoji.emojify(body, emojiConfig)} 
 							</div>

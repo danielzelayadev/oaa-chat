@@ -100,14 +100,14 @@ const sendBtnStyles = {
 		}
 	}
 	render () {
-		const { className, room: { messages } } = this.props
+		const { className, sender, room: { messages } } = this.props
 		const { message } = this.state
 		return (
 			<div class={`${styles.root} ${className}`}>
 				<div ref="msgs" class={styles.messages} style={messagesStyles}>
 					{
 						messages.map((msg, i) => (
-							<Message key={i} {...msg} sent />
+							<Message key={i} {...msg} sent={ msg.sender === sender } />
 						))
 					}
 				</div>
