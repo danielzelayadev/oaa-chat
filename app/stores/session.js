@@ -15,19 +15,12 @@ class SessionStore {
 	@observable loginFailed = false
 
 	@action async fetch () {
-		if (this.user)
-			return
-
-		console.log('Fecthing user')
-		
 		try {
 			const response = await axios.get(`${API}/me`, auth(this.token))
 			this.user = response.data
 			cache('user', this.user)
 		} catch (e) {
 			console.error(e)
-		} finally {
-
 		}
 	}
 
@@ -119,12 +112,40 @@ class SessionStore {
 		}
 	}
 
-	@action join (room) {
+	@action async join (room) {
 		this.user.rooms.push(room)
+
+		try {
+			await axios.post(`${API}/rooms/add-users`, 
+				{ title: room.title, members: [ this.user.username ] }, auth(this.token))
+		} catch (e) {
+			const response = e.response
+
+			if (!response)
+				console.error(e.message)
+			else
+				console.error(response.data.message)
+
+			this.error = "The change you made has not been saved. Try reloading."
+		}
 	}
 
-	@action exit (room) {
-		this.user.rooms = this.user.rooms.filter(e => e.name !== room.name)
+	@action async exit (room) {
+		this.user.rooms = this.user.rooms.filter(e => e.title !== room.title)
+
+		try {
+			await axios.post(`${API}/rooms/remove-users`, 
+				{ title: room.title, members: [ this.user.username ] }, auth(this.token))
+		} catch (e) {
+			const response = e.response
+
+			if (!response)
+				console.error(e.message)
+			else
+				console.error(response.data.message)
+
+			this.error = "The change you made has not been saved. Try reloading."
+		}
 	}
 
 	isFriend (user) {

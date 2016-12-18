@@ -1,10 +1,10 @@
 import { observable, computed, action } from 'mobx'
 import axios from 'axios'
+import { auth, get, cache } from '../utils'
 import { API } from '../constants'
-import { SessionStore } from '.'
+import { SessionStore, RoomsStore } from '.'
 
 class NewRoomStore {
-	@observable admin
 	@observable avatar = null
 	@observable name = ""
 	@observable members = []
@@ -33,29 +33,27 @@ class NewRoomStore {
 	}
  
 	@action async create () {
-		this.admin = SessionStore.user.username
-		console.log(this.admin, this.name, this.avatar.name, this.members.slice())
-		// if (this.pending)
-		// 	return
+		try {
+			const response = await axios.post(`${API}/rooms`, 
+							{ title: this.name, avatar: this.avatarData,
+							  members: this.members.slice(), visibility: 'public' }, 
+							  auth(SessionStore.token))
 
-		// this.pending = true
-		// this.failed = false
+			if (typeof RoomsStore.rooms !== 'array')
+				RoomsStore.rooms = []
 
-		// try {
-		// 	await axios.post(`${API}/users`, user)
-		// } catch (e) {
-		// 	const response = e.response
+			RoomsStore.rooms.push(response.data)
+			SessionStore.user.rooms.push(response.data)
+		} catch (e) {
+			const response = e.response
 
-		// 	if (!response) {
-		// 		this.error = "Something went wrong."
-		// 		console.error(e.message)
-		// 	} else
-		// 		this.error = response.data
+			if (!response)
+				console.error(e.message)
+			else
+				console.error(response.data.message)
 
-		// 	this.failed = true
-		// } finally {
-		// 	this.pending = false
-		// }
+			this.error = "The change you made has not been saved. Try reloading."
+		}
 	}
 
 	@action clear () {

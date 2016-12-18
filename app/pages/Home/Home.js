@@ -139,7 +139,7 @@ let drawerId
 							{
 								openRoom ?
 								<div class={styles.rightPaneContent}>
-									<AppBar style={appBarStyles} title={openRoom.name}	
+									<AppBar style={appBarStyles} title={openRoom.title}	
 									    titleStyle={{ fontSize: 19, marginLeft: 5 }}
 								        iconElementLeft={
 								        	<Avatar 

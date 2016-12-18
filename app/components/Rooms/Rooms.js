@@ -9,7 +9,7 @@ let drawerId, drawerTitle, profileProps
 
 const getItems = () => {
 	const { rooms } = RoomsStore
-	return rooms.map(e => ({ primaryText: e.name, avatar: e.avatar, data: e }))
+	return rooms.map(e => ({ primaryText: e.title, avatar: e.avatar, data: e }))
 }
 
 const listItemProps = {
@@ -18,7 +18,7 @@ const listItemProps = {
 
 const onListItemClick = room => {
 	const isInRoom = SessionStore.isInRoom(room)
-	drawerTitle = room.name 
+	drawerTitle = room.title
 	profileProps = getRoomProfileProps(room)
 	profileProps.actions = [
 		{ label: isInRoom ? 'Exit' : 'Join', 
@@ -26,9 +26,9 @@ const onListItemClick = room => {
 		  labelColor: isInRoom ? '#fff' : '#000',
 		  onClick: () => {
 		  	if (isInRoom)
-		  		SessionStore.join(room)
-		  	else
 		  		SessionStore.exit(room)
+		  	else
+		  		SessionStore.join(room)
 		  	DrawerStore.pop()
 		  } 
 		}

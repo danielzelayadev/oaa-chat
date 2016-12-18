@@ -27,7 +27,7 @@ let closedRooms, openRooms
 @observer class MyRoomsList extends Component {
 
 	componentWillMount () {
-		closedRooms = RoomsStore.rooms
+		closedRooms = [ ...RoomsStore.rooms ]
 		openRooms = []
 	}
 
@@ -40,7 +40,7 @@ let closedRooms, openRooms
 	}
 
 	roomClicked (room) {
-		const res = closedRooms.filter(e => e.name === room.name)
+		const res = closedRooms.filter(e => e.title === room.title)
 		const index = closedRooms.indexOf(res[0])
 
 		if (index >= 0) {
@@ -61,7 +61,7 @@ let closedRooms, openRooms
 		else {
 			const regex = new RegExp(text, "i")
 			this.setState({ ...this.state, searchText: text,
-				            visibleRooms: closedRooms.filter(e => regex.test(e.name)) })
+				            visibleRooms: closedRooms.filter(e => regex.test(e.title)) })
 		}
 	}
 
@@ -114,7 +114,7 @@ let closedRooms, openRooms
 						{ 
 							visibleRooms.map((e, key) =>
 								<div key={key}>
-									<ListItem primaryText={e.name}
+									<ListItem primaryText={e.title}
 									secondaryText={this.getSecondaryText(e)}
 									secondaryTextLines={2}
 									onClick={this.roomClicked.bind(this, e)} 
