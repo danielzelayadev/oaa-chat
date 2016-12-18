@@ -31,8 +31,13 @@ let closedRooms, openRooms
 			searchText: '',
 			visibleRooms: []
 		}
+		closedRooms = SessionStore.closedRooms
+		openRooms = SessionStore.openRooms
 	}
-
+	componentDidUpdate() {
+		closedRooms = SessionStore.closedRooms
+		openRooms = SessionStore.openRooms
+	}
 	roomClicked (room) {
 		const res = closedRooms.filter(e => e.title === room.title)
 		const index = closedRooms.indexOf(res[0])
@@ -89,8 +94,6 @@ let closedRooms, openRooms
 	render () {
 		const { className } = this.props
 		const { searchText, visibleRooms } = this.state
-		closedRooms = [ ...SessionStore.user.rooms ]
-		openRooms = []
 		return (
 			<div class={`${className}`} >
 				<div class={styles.searchArea}>

@@ -6,7 +6,7 @@ import { API } from '../constants'
 
 class SessionStore {
 	@observable token = get('token')
-	@observable user  = get('user')
+	@observable user
 
 	@observable friendsFilter = ""
 
@@ -14,11 +14,14 @@ class SessionStore {
 	@observable pending = false
 	@observable loginFailed = false
 
+	@observable closedRooms = []
+	@observable openRooms = []
+
 	@action async fetch () {
 		try {
 			const response = await axios.get(`${API}/me`, auth(this.token))
 			this.user = response.data
-			cache('user', this.user)
+			this.closedRooms = [ ...this.user.rooms ]
 		} catch (e) {
 			console.error(e)
 		}
@@ -71,9 +74,6 @@ class SessionStore {
 		RoomsStore.rooms = null
 		RoomsStore.openRoom = null
 		cache('token', "")
-		cache('user', "")
-		cache('users', "")
-		cache('rooms', "")
 	}
 
 	@action async friend (user) {
@@ -114,12 +114,12 @@ class SessionStore {
 
 	@action async join (room) {
 		this.user.rooms.push(room)
+		this.closedRooms.push(room)
+		room.members.push(this.user.username)
 
 		try {
 			await axios.post(`${API}/rooms/add-users`, 
 				{ title: room.title, members: [ this.user.username ] }, auth(this.token))
-
-			room.members.push(this.user.username)
 		} catch (e) {
 			const response = e.response
 
@@ -134,12 +134,14 @@ class SessionStore {
 
 	@action async exit (room) {
 		this.user.rooms = this.user.rooms.filter(e => e.title !== room.title)
+		this.closedRooms = this.closedRooms.filter(e => e.title !== room.title)
+		this.openRooms = this.openRooms.filter(e => e.title !== room.title)
+		RoomsStore.openRoom = RoomsStore.openRoom.title === room.title ? null : RoomsStore.openRoom
+		room.members.splice(room.members.indexOf(this.user.username), 1)
 
 		try {
 			await axios.post(`${API}/rooms/remove-users`, 
 				{ title: room.title, members: [ this.user.username ] }, auth(this.token))
-
-			room.members.splice(room.members.indexOf(this.user.username), 1)
 		} catch (e) {
 			const response = e.response
 
