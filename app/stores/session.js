@@ -17,7 +17,9 @@ class SessionStore {
 	@action async fetch () {
 		if (this.user)
 			return
+
 		console.log('Fecthing user')
+		
 		try {
 			const response = await axios.get(`${API}/me`, auth(this.token))
 			this.user = response.data

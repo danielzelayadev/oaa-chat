@@ -30,5 +30,5 @@ export const cache = (store, data) => window.localStorage[store] = JSON.stringif
 
 export const get = store => {
 	const data = window.localStorage[store]
-	return data && data !== "" ? JSON.parse(data) : null
+	return data && data !== "" && data !== `""` ? JSON.parse(data) : null
 }

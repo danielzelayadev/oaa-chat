@@ -10,7 +10,9 @@ class UsersStore {
 	@action async fetch () {
 		if (this.users)
 			return
+
 		console.log('Fetching users')
+		
 		try {
 			const response = await axios.get(`${API}/users`, auth(SessionStore.token))
 			this.users = response.data

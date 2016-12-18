@@ -11,7 +11,9 @@ class RoomsStore {
 	@action async fetch () {
 		if (this.rooms)
 			return
+
 		console.log('Fetching Rooms')
+		
 		try {
 			const response = await axios.get(`${API}/rooms`, auth(SessionStore.token))
 			this.rooms = response.data
