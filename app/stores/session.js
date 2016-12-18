@@ -1,11 +1,12 @@
 import { observable, computed, action } from 'mobx'
 import axios from 'axios'
-import { auth } from '../utils'
+import { UsersStore, RoomsStore } from '.'
+import { auth, get, cache } from '../utils'
 import { API } from '../constants'
 
 class SessionStore {
-	@observable token
-	@observable user
+	@observable token = get('token')
+	@observable user  = get('user')
 
 	@observable friendsFilter = ""
 
@@ -13,18 +14,19 @@ class SessionStore {
 	@observable pending = false
 	@observable loginFailed = false
 
-	constructor () {
-		const userstr = window.localStorage['user']
-		const tokenstr = window.localStorage['token']
-
-		this.token = tokenstr ? tokenstr : ""
-		this.user = userstr ? JSON.parse(userstr) : ""
-	}
-
 	@action async fetch () {
-		const response = await axios.get(`${API}/me`, auth(this.token))
-		this.user = response.data
-		window.localStorage['user'] = JSON.stringify(this.user)
+		if (this.user)
+			return
+		console.log('Fecthing user')
+		try {
+			const response = await axios.get(`${API}/me`, auth(this.token))
+			this.user = response.data
+			cache('user', this.user)
+		} catch (e) {
+			console.error(e)
+		} finally {
+
+		}
 	}
 
 	@computed get filteredFriends() {
@@ -37,7 +39,7 @@ class SessionStore {
 	}
 
 	@computed get loggedIn () {
-		return this.token !== ""
+		return this.token
 	}
 
 	@action async login (creds) {
@@ -50,7 +52,8 @@ class SessionStore {
 		try {
 			const response = await axios.post(`${API}/login`, creds)
 			const { hash } = response.data
-			this.token = window.localStorage['token'] = hash
+			this.token = hash
+			cache('token', this.token)
 		} catch (e) {
 			const response = e.response
 
@@ -67,8 +70,15 @@ class SessionStore {
 	}
 
 	@action logout () {
-		this.token = window.localStorage['token'] = ""
-		this.user = window.localStorage['user'] = ""
+		this.token = null
+		this.user = null
+		UsersStore.users = null
+		RoomsStore.rooms = null
+		RoomsStore.openRoom = null
+		cache('token', "")
+		cache('user', "")
+		cache('users', "")
+		cache('rooms', "")
 	}
 
 	@action friend (user) {
