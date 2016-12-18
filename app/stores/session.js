@@ -101,8 +101,22 @@ class SessionStore {
 		}
 	}
 
-	@action unfriend (friend) {
+	@action async unfriend (friend) {
 		this.user.friends = this.user.friends.filter(e => e.username !== friend.username)
+
+		try {
+			await axios.post(`${API}/users/remove-friend`, 
+				{ username: friend.username }, auth(this.token))
+		} catch (e) {
+			const response = e.response
+
+			if (!response)
+				console.error(e.message)
+			else
+				console.error(response.data.message)
+
+			this.error = "The change you made has not been saved. Try reloading."
+		}
 	}
 
 	@action join (room) {
