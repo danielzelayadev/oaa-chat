@@ -25,3 +25,10 @@ export const drawerIsOpen = (id, drawers) => id > 0 && id <= drawers
 export const auth = token => ({
   headers: { 'Authorization': `Token ${token}` }
 })
+
+export const cache = (store, data) => window.localStorage[store] = JSON.stringify(data)
+
+export const get = store => {
+	const data = window.localStorage[store]
+	return data && data !== "" ? JSON.parse(data) : null
+}
