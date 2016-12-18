@@ -14,6 +14,7 @@ import Avatar from 'material-ui/Avatar'
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
+import { Toastr } from '../../components'
 import styles from './Home.css'
 
 const appBarStyles = {
@@ -108,6 +109,7 @@ let drawerId
 	}
 
 	render () {
+		const { error } = SessionStore
 		const { openRoom } = RoomsStore
 		const { loading } = AppStore
 		return (
@@ -162,6 +164,9 @@ let drawerId
 						<Halogen.ClipLoader color='#5e8f9b' />
 					</div>
 				}
+				<Toastr title='Error' type='error' 
+						timeout={5} message={error} 
+						show={error.length} />
 			</span>
 		)
 	}

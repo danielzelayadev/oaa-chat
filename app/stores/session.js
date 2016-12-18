@@ -10,7 +10,7 @@ class SessionStore {
 
 	@observable friendsFilter = ""
 
-	@observable error
+	@observable error = ""
 	@observable pending = false
 	@observable loginFailed = false
 
@@ -83,8 +83,22 @@ class SessionStore {
 		cache('rooms', "")
 	}
 
-	@action friend (user) {
+	@action async friend (user) {
 		this.user.friends.push(user)
+
+		try {
+			await axios.post(`${API}/users/add-friend`, 
+				{ username: user.username }, auth(this.token))
+		} catch (e) {
+			const response = e.response
+
+			if (!response)
+				console.error(e.message)
+			else
+				console.error(response.data.message)
+
+			this.error = "The change you made has not been saved. Try reloading."
+		}
 	}
 
 	@action unfriend (friend) {
